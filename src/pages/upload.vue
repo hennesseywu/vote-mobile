@@ -91,7 +91,7 @@
 </template>
 
 <script>
-  import Md5 from "js-md5"
+  // import Md5 from "js-md5"
   //document.domain = "youku.com";
 
 

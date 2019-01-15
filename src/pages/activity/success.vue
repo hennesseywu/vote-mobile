@@ -4,7 +4,7 @@
       <img class="icon" src="../../assets/images/success.png">
     </div>
 
-    <div class="success-label">提交成功</div>
+    <div class="success-label">报名成功，请及时查看报名结果</div>
   </div>
 </template>
 
@@ -20,14 +20,14 @@
     text-align: center;
 
     .icon {
-      margin-top: 30px;
-      width: 400px;
-      height: 400px;
+      margin-top: 100px;
+      width: 300px;
+      height: 300px;
     }
 
     .success-label {
       margin: 50px;
-      font-size: 48px;
+      font-size: 38px;
     }
   }
 

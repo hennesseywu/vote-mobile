@@ -12,8 +12,8 @@
     "dependencies": {
         "axios": "^0.18.0",
         "cssnano": "^4.1.8",
+        "fontawesome": "^5.6.3",
         "js-md5": "^0.7.3",
-        "mint-ui": "^2.2.13",
         "postcss-aspect-ratio-mini": "^1.0.1",
         "postcss-cssnext": "^3.1.0",
         "postcss-px-to-viewport": "0.0.3",
@@ -22,7 +22,8 @@
         "promise-polyfill": "^8.1.0",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
-        "vuex": "^3.0.1"
+        "vuex": "^3.0.1",
+        "vux": "^2.9.2"
     },
     "devDependencies": {
         "autoprefixer": "^7.1.2",
@@ -42,6 +43,8 @@
         "file-loader": "^1.1.4",
         "friendly-errors-webpack-plugin": "^1.6.1",
         "html-webpack-plugin": "^2.30.1",
+        "less": "^3.9.0",
+        "less-loader": "^4.1.0",
         "node-notifier": "^5.1.2",
         "optimize-css-assets-webpack-plugin": "^3.2.0",
         "ora": "^1.2.0",
@@ -57,12 +60,12 @@
         "vue-loader": "^13.3.0",
         "vue-style-loader": "^3.0.1",
         "vue-template-compiler": "^2.5.2",
+        "vux-loader": "^1.2.9",
         "webpack": "^3.6.0",
         "webpack-bundle-analyzer": "^2.9.0",
         "webpack-dev-server": "^2.9.1",
         "webpack-merge": "^4.1.0",
-        "less": "^3.9.0",
-        "less-loader": "^4.1.0"
+        "yaml-loader": "^0.5.0"
     },
     "engines": {
         "node": ">= 6.0.0",

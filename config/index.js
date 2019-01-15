@@ -12,17 +12,7 @@ module.exports = {
         proxyTable: {
             '/syzxEnterInfo': {
                 target: 'http://192.168.19.177:9999', //目标接口域名
-                changeOrigin: true, //是否跨域
-                pathRewrite: {
-                    '^/syzxEnterInfo': '' //重写接口
-                }
-            },
-            '/api': {
-                target: 'http://upload.youku.com/api', //目标接口域名
-                changeOrigin: true, //是否跨域
-                pathRewrite: {
-                    '^/api': '' //重写接口
-                }
+                changeOrigin: true //是否跨域
             }
         },
         // Various Dev Server settings

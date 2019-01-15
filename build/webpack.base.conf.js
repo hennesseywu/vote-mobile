@@ -3,14 +3,14 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const vuxLoader = require('vux-loader')
+
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-
-
-module.exports = {
+let webpackConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
@@ -19,20 +19,28 @@ module.exports = {
     path: config.build.assetsRoot,
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production' ?
-      config.build.assetsPublicPath :
-      config.dev.assetsPublicPath
+      config.build.assetsPublicPath : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'styles': resolve('src/assets/styles'),
-      'images': resolve('src/assets/images')
     }
   },
   module: {
-    rules: [{
+    rules: [
+      ...(config.dev.useEslint ? [{
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [resolve('src'), resolve('test')],
+        options: {
+          formatter: require('eslint-friendly-formatter'),
+          emitWarning: !config.dev.showEslintErrorsInOverlay
+        }
+      }] : []),
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
@@ -40,7 +48,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [resolve('src'), resolve('test')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -81,3 +89,26 @@ module.exports = {
     child_process: 'empty'
   }
 }
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: [
+    'vux-ui',
+    'progress-bar',
+    {
+      name: 'duplicate-style',
+      options: {
+        cssProcessorOptions: {
+          safe: true,
+          zindex: false,
+          autoprefixer: {
+            add: true,
+            browsers: [
+              'iOS >= 7',
+              'Android >= 4.1'
+            ]
+          }
+        }
+      }
+    }
+  ],
+})

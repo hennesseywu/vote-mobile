@@ -6,49 +6,57 @@
     <p class="introduction">
       这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。
     </p>
-    <div class="enter">
-      <mt-button type="primary" @click="toEnter">立即报名</mt-button>
-    </div>
-    <div class="rule">
-      <mt-button type="primary" @click="toRule">
+    <div class="bottom">
+      <x-button type="primary" @click.native="toEnter">立即报名</x-button>
+      <x-button type="primary" @click.native="toRule">
         活动规则
-      </mt-button>
+      </x-button>
     </div>
-    <mt-popup class="rule-modal" v-model="showRule" popup-transition="popup-fade">
-      <div class="content">
-        <p class="rule-title">活动说明：</p>
-        <p class="rule-content">
-          这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求的呀哈哈。
-        </p>
-        <p class="rule-title">活动规则：</p>
-        <p class="rule-content">
-          这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求的呀哈哈。
-        </p>
-        <p class="rule-title">活动时间：</p>
-        <p class="rule-content">
-          2019-02-17 </p>
-      </div>
-      <img src="../../assets/images/close-bag.png" class="close" @click="closeRule">
-    </mt-popup>
+    <div v-transfer-dom>
+      <popup v-model="showRule" class="rule-modal" position="top" height="100%">
+        <div class="content">
+          <p class="rule-title">活动说明：</p>
+          <p class="rule-content">
+            这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求的呀哈哈。
+          </p>
+          <p class="rule-title">活动规则：</p>
+          <p class="rule-content">
+            这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求的呀哈哈。
+          </p>
+          <p class="rule-title">活动时间：</p>
+          <p class="rule-content">
+            2019-02-17 </p>
+        </div>
+        <div class="bottom">
+          <img src="../../assets/images/close-bag.png" class="close" @click="closeRule">
+        </div>
+      </popup>
+    </div>
   </div>
 </template>
 
 <script>
   import Vue from 'vue'
   import {
-    Popup,
-    Button
-  } from "mint-ui";
-  Vue.component(Button.name, Button);
-  Vue.component(Popup.name, Popup);
+    TransferDom,
+    XButton,
+    Popup
 
+  } from 'vux'
   export default {
     data() {
       return {
-        showRule: false
+        showRule: false,
+        hideOnBlur: true
       }
     },
-    components: {},
+    directives: {
+      TransferDom
+    },
+    components: {
+      XButton,
+      Popup
+    },
     methods: {
       toEnter() {
         this.$router.push({
@@ -56,6 +64,7 @@
         })
       },
       toRule() {
+        console.log("toRule")
         this.showRule = true;
       },
       closeRule() {
@@ -96,38 +105,59 @@
       font-size: 32px;
     }
 
-    .enter {
-      margin-top: 20px;
+    .bottom {
+      padding: 50px;
     }
+  }
 
-    .rule {
-      margin-top: 50px;
-    }
+  .rule-modal {
 
-    .rule-modal {
+
+    // .weui-dialog {
+    //   border-radius: 8px;
+    //   padding-bottom: 8px;
+    // }
+
+    // .dialog-title {
+    //   line-height: 30px;
+    //   color: #666;
+    // }
+
+    // .img-box {
+    //   height: 350px;
+    //   overflow: hidden;
+    // }
+
+    // .vux-close {
+    //   margin-top: 8px;
+    //   margin-bottom: 8px;
+    // }
+
+    .content {
       width: 680px;
       border-radius: 20px;
+      text-align: left;
+      padding: 50px;
 
-      .content {
-        text-align: left;
-        padding: 50px;
-
-        .rule-title {
-          font-size: 36px;
-          margin: 10px;
-        }
-
-        .rule-content {
-          padding: 10px;
-          font-size: 20px
-        }
+      .rule-title {
+        font-size: 36px;
+        margin: 10px;
       }
 
-      .close {
-        width: 88px;
-        height: 88px;
-        margin-bottom: 20px;
+      .rule-content {
+        padding: 10px;
+        font-size: 20px
       }
+    }
+
+    .bottom {
+      text-align: center;
+    }
+
+    .close {
+      width: 88px;
+      height: 88px;
+      margin-bottom: 20px;
     }
   }
 
