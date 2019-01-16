@@ -24,11 +24,10 @@
             这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求。这里是闪耀之星活动介绍，如果没有介绍的话，也可以点进来就直接是填写内容的地方，这个可以自行定义的，看具体需求的呀哈哈。
           </p>
           <p class="rule-title">活动时间：</p>
-          <p class="rule-content">
-            2019-02-17 </p>
+          <p class="rule-content">2019-02-17 </p>
         </div>
         <div class="bottom">
-          <img src="../../assets/images/close-bag.png" class="close" @click="closeRule">
+          <div class="vux-close" @click="closeRule()"></div>
         </div>
       </popup>
     </div>
@@ -41,17 +40,12 @@
     TransferDom,
     XButton,
     Popup
-
   } from 'vux'
   export default {
     data() {
       return {
-        showRule: false,
-        hideOnBlur: true
+        showRule: false
       }
-    },
-    directives: {
-      TransferDom
     },
     components: {
       XButton,
@@ -64,12 +58,12 @@
         })
       },
       toRule() {
-        console.log("toRule")
         this.showRule = true;
       },
       closeRule() {
         this.showRule = false;
       }
+
     },
   }
 
@@ -91,18 +85,8 @@
     }
 
     .introduction {
-      font-size: 20px;
+      font-size: 28px;
       padding: 50px;
-    }
-
-    .button {
-      background: #3498db;
-      width: 260px;
-      height: 90px;
-      padding: 4px 0;
-      border-radius: 10px;
-      color: #ffffff;
-      font-size: 32px;
     }
 
     .bottom {
@@ -111,28 +95,6 @@
   }
 
   .rule-modal {
-
-
-    // .weui-dialog {
-    //   border-radius: 8px;
-    //   padding-bottom: 8px;
-    // }
-
-    // .dialog-title {
-    //   line-height: 30px;
-    //   color: #666;
-    // }
-
-    // .img-box {
-    //   height: 350px;
-    //   overflow: hidden;
-    // }
-
-    // .vux-close {
-    //   margin-top: 8px;
-    //   margin-bottom: 8px;
-    // }
-
     .content {
       width: 680px;
       border-radius: 20px;
@@ -146,7 +108,7 @@
 
       .rule-content {
         padding: 10px;
-        font-size: 20px
+        font-size: 28px
       }
     }
 

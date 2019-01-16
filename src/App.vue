@@ -26,6 +26,7 @@ export default {
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
   }
+  @import '~vux/src/styles/close.less';
   @import '~vux/src/styles/reset.less';
   .router-view {
     width: 100%;

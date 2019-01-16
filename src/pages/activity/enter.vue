@@ -32,13 +32,15 @@
       <img slot="icon" src="" width="24" height="24">
       </mt-field>-->
     </form>
-    <popup v-model="sexShow" position="bottom" max-height="50%">
-      <group>
-        <radio :options="radioOption" @on-change="radioChange"></radio>
-      </group>
-    </popup>
     <div class="bottom">
       <x-button type="primary" @click.native="submitForm">提交报名</x-button>
+    </div>
+    <div v-transfer-dom>
+      <popup v-model="sexShow" position="bottom" max-height="50%">
+        <group title="选择性别">
+          <radio :options="radioOption" @on-change="radioChange"></radio>
+        </group>
+      </popup>
     </div>
   </div>
 </template>
