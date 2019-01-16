@@ -6,7 +6,9 @@
         <x-input title="姓名" required name="name" ref="name" v-model="name" placeholder="请输入参赛者姓名" is-type="china-name"></x-input>
         <x-input title='年龄' :max="2" required name="age" ref="age" placeholder="请输入参赛者年龄" v-model="age"></x-input>
         <group>
-          <popup-radio title="性别" required :options="radioOption" ref="sex" name="sex" v-model="sex"></popup-radio>
+          <cell title="性别" v-model="sexLabel" @click.native="showRadio">
+          </cell>
+          <input type="hidden" name="sex" v-model="sex">
         </group>
         <x-input title="身份证号" :max="18" required name="idCard" ref="idCard" v-model="idCard" placeholder="请输入参赛者身份证号"
           keyboard="number"></x-input>
@@ -30,22 +32,29 @@
       <img slot="icon" src="" width="24" height="24">
       </mt-field>-->
     </form>
+    <popup v-model="sexShow" position="bottom" max-height="50%">
+      <group>
+        <radio :options="radioOption" @on-change="radioChange"></radio>
+      </group>
+    </popup>
     <div class="bottom">
       <x-button type="primary" @click.native="submitForm">提交报名</x-button>
     </div>
   </div>
 </template>
-
 <script>
   import Vue from "vue";
   import {
     XInput,
     Group,
     XButton,
-    PopupRadio,
+    Radio,
     XTextarea,
+    PopupPicker,
     ToastPlugin,
-    LoadingPlugin
+    LoadingPlugin,
+    Cell,
+    Popup
   } from "vux";
 
   Vue.use(ToastPlugin)
@@ -53,45 +62,57 @@
 
   export default {
     components: {
+      Cell,
       XInput,
       Group,
       XButton,
-      PopupRadio,
-      XTextarea
+      Radio,
+      XTextarea,
+      PopupPicker,
+      Popup
     },
     data() {
       return {
-        name: "11",
-        age: "11",
-        sex: "男",
-        idCard: "510122198909282012",
-        phone: "13551379879",
+        name: "",
+        age: "",
+        sex: "",
+        idCard: "",
+        phone: "",
         verifyCode: "",
         video: "video",
         videoFileName: "video",
-        remark: "小发师傅师傅师傅舒舒服服",
+        remark: "",
         selectedImage: false,
         selectedVideo: false,
+        sexLabel: "请选择性别",
+        sexShow: false,
         radioOption: [{
           key: "1",
           value: "男"
         }, {
-          value: "女",
-          key: "2"
+          key: "2",
+          value: "女"
         }]
       };
     },
     methods: {
+      showRadio() {
+        this.sexShow = true;
+      },
+      radioChange(value, label) {
+        this.sexLabel = label;
+        this.sex = value;
+        this.sexShow = false;
+      },
       onFile(e, type) {
-        let checkResult = this.checkFileSize(e.target.files, type);
+        let checkResult = this.checkFileSize(e.target.files, type); //表单验证统一处理
         if (checkResult) {
-          console.log("e.target.files", e.target.files)
           if (type == "photo") {
             var reads = new FileReader();
             reads.readAsDataURL(e.target.files[0]);
             reads.onload = function (e) {
               document.getElementById(type).style["background-image"] =
-                `url(${e.currentTarget.result}) `;
+                `url(${e.currentTarget.result})`;
             };
             this.selectedImage = true;
           } else {
@@ -114,7 +135,7 @@
       submitForm() {
         if (!this.checkForm()) return;
         var form = new FormData(this.$refs.form);
-        this.$vux.loading.show()
+        this.$vux.loading.show();
         this.$ajax({
           method: "post",
           url: "/syzxEnterInfo/add",
