@@ -12,35 +12,42 @@
         <cell title="上传图片" inline-desc="每张图片大小不超过2M">
           <div class="photo-group">
             <div class="photo">
-              <img class="photo-image" ref="photo1" src="../../assets/images/imageupload.jpg">
-              <input type="file" accept="image/*" class="file" ref="images1" name="images1" @change="onFile($event,'photo1')">
+              <form ref="imageForm1">
+                <img class="photo-image" ref="photo1" src="../../assets/images/imageupload.jpg">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo1','imageForm1')">
+              </form>
             </div>
             <div class="photo">
-              <img class="photo-image" ref="photo2" src="../../assets/images/imageupload.jpg">
-              <input type="file" accept="image/*" class="file" ref="images1" name="images1" @change="onFile($event,'photo2')">
+              <form ref="imageForm2">
+                <img class="photo-image" ref="photo2" src="../../assets/images/imageupload.jpg">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo2','imageForm2')">
+              </form>
             </div>
             <div class="photo">
-              <img class="photo-image" ref="photo3" src="../../assets/images/imageupload.jpg">
-              <input type="file" accept="image/*" class="file" ref="images1" name="images1" @change="onFile($event,'photo3')">
+              <form ref="imageForm3">
+                <img class="photo-image" ref="photo3" src="../../assets/images/imageupload.jpg">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo3','imageForm3')">
+              </form>
             </div>
             <div class="photo">
-              <img class="photo-image" ref="photo4" src="../../assets/images/imageupload.jpg">
-              <input type="file" accept="image/*" class="file" ref="images1" name="images1" @change="onFile($event,'photo4')">
+              <form ref="imageForm4">
+                <img class="photo-image" ref="photo4" src="../../assets/images/imageupload.jpg">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo4','imageForm4')">
+              </form>
             </div>
             <div class="photo">
-              <img class="photo-image" ref="photo5" src="../../assets/images/imageupload.jpg">
-              <input type="file" accept="image/*" class="file" ref="images1" name="images1" @change="onFile($event,'photo5')">
+              <form ref="imageForm5">
+                <img class="photo-image" ref="photo5" src="../../assets/images/imageupload.jpg">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo5','imageForm5')">
+              </form>
             </div>
           </div>
         </cell>
         <cell title="上传视频" inline-desc="视频大小不超过10M">
-          <form ref="imageForm">
-            <div class="video" id="video">
-              <input type="hidden" name="videoFileName" v-model="videoFileName">
-              <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video')">
-            </div>
-          </form>
-
+          <div class="video" id="video">
+            <input type="hidden" name="videoFileName" v-model="videoFileName">
+            <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video')">
+          </div>
         </cell>
         <x-textarea title="介绍" required v-model="remark" name="remark" ref="remark" placeholder="请对你的资料做简单介绍~"></x-textarea>
         <x-input title="手机号码" :max="11" required name="phone" ref="phone" v-model="phone" placeholder="请输入手机号码"
@@ -108,6 +115,7 @@
         selectedVideo: false,
         sexLabel: "请选择性别",
         sexShow: false,
+        uuid: "",
         radioOption: [{
             key: "1",
             value: "男"
@@ -119,6 +127,20 @@
         ]
       };
     },
+    created() {
+      if (!localStorage.getItem("uuid")) {
+        this.$ajax({
+          method: "post",
+          url: "/syzxEnterInfo/init"
+        }).then(result => {
+          this.uuid = result.data
+          localStorage.setItem("uuid", result.data)
+          console.log(result.data)
+        })
+      } else {
+        this.uuid = localStorage.getItem("uuid");
+      }
+    },
     methods: {
       showRadio() {
         this.sexShow = true;
@@ -128,19 +150,14 @@
         this.sex = value;
         this.sexShow = false;
       },
-      onFile(e, displayName) {
+      onFile(e, displayName, formName) {
         let checkResult = this.checkFileSize(e.target.files, displayName); //表单验证统一处理
         if (checkResult) {
           if (displayName == "video") {
             this.selectedVideo = true;
           } else {
-            var reads = new FileReader();
-            reads.readAsDataURL(e.target.files[0]);
-            reads.onload = event => {
-              this.$refs[displayName].src = event.target.result;
-            };
-            this.selectedImage = true;
-            var form = new FormData(this.$refs.imageForm);
+            let form = new FormData(this.$refs[formName]);
+            form.append("id", this.uuid);
             this.$ajax({
               method: "post",
               url: "/syzxEnterInfo/upload",
@@ -149,7 +166,13 @@
                 "Content-Type": "multipart/form-data"
               }
             }).then(result => {
-
+              this.selectedImage = true;
+              console.log(result)
+              var reads = new FileReader();
+              reads.readAsDataURL(e.target.files[0]);
+              reads.onload = event => {
+                this.$refs[displayName].src = event.target.result;
+              };
             })
           }
           this.$vux.toast.text("上传成功");
@@ -168,12 +191,6 @@
           }
         }
         return true;
-      },
-      submitImageForm() {
-
-      },
-      submitVideoForm() {
-
       },
       submitForm() {
         if (!this.checkForm()) return;
