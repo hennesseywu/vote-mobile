@@ -8,10 +8,15 @@ import axio from './utils/axio'
 import '@/assets/styles/reset.less';
 import '@/assets/styles/font-awesome.min.css'
 import FastClick from 'fastclick'
+import Vconsole from 'vconsole'
 FastClick.attach(document.body)
-import { TransferDom } from 'vux'
+import {
+  TransferDom
+} from 'vux'
 
-Vue.directive('transfer-dom', TransferDom)//必须有一个 div 作为占位元素否则会出错
+// const vConsole = new Vconsole();
+
+Vue.directive('transfer-dom', TransferDom) //必须有一个 div 作为占位元素否则会出错
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axio
