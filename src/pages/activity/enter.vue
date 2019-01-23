@@ -34,10 +34,13 @@
           </div>
         </cell>
         <cell title="上传视频" inline-desc="视频大小不超过10M">
-          <div class="video" id="video">
-            <input type="hidden" name="videoFileName" v-model="videoFileName">
-            <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video')">
-          </div>
+          <form ref="imageForm">
+            <div class="video" id="video">
+              <input type="hidden" name="videoFileName" v-model="videoFileName">
+              <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video')">
+            </div>
+          </form>
+
         </cell>
         <x-textarea title="介绍" required v-model="remark" name="remark" ref="remark" placeholder="请对你的资料做简单介绍~"></x-textarea>
         <x-input title="手机号码" :max="11" required name="phone" ref="phone" v-model="phone" placeholder="请输入手机号码"
@@ -137,6 +140,17 @@
               this.$refs[displayName].src = event.target.result;
             };
             this.selectedImage = true;
+            var form = new FormData(this.$refs.imageForm);
+            this.$ajax({
+              method: "post",
+              url: "/syzxEnterInfo/upload",
+              data: form,
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            }).then(result => {
+
+            })
           }
           this.$vux.toast.text("上传成功");
         }
@@ -154,6 +168,12 @@
           }
         }
         return true;
+      },
+      submitImageForm() {
+
+      },
+      submitVideoForm() {
+
       },
       submitForm() {
         if (!this.checkForm()) return;
