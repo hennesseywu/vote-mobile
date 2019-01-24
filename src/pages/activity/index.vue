@@ -14,8 +14,9 @@
         v-model="showRule"
         class="rule-modal"
         :popup-style="{background:'#ffffff'}"
-        position="top"
-        height="100%"
+        position="left"
+        width=80%
+        height="80%"
       >
         <div class="content">
           <p class="rule-title">活动说明：</p>

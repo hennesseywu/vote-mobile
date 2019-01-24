@@ -44,9 +44,13 @@
           </div>
         </cell>
         <cell title="上传视频" inline-desc="视频大小不超过10M">
-          <div class="video" id="video">
-            <input type="hidden" name="videoFileName" v-model="videoFileName">
-            <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video')">
+          <div class="video">
+            <form ref="videoForm">
+              <video v-show="selectedVideo" ref="realVideo" class="video-image" src=""></video>
+              <img v-show="!selectedVideo" class="video-image" ref="videoImg" src="../../assets/images/videoupload.jpg">
+              <input type="hidden" name="videoFileName" v-model="videoFileName">
+              <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video','videoForm')">
+            </form>
           </div>
         </cell>
         <x-textarea title="介绍" required v-model="remark" name="remark" ref="remark" placeholder="请对你的资料做简单介绍~"></x-textarea>
@@ -54,7 +58,7 @@
           keyboard="number" is-type="china-mobile">
         </x-input>
         <x-input title="发送验证码" class="weui-vcode">
-          <x-button slot="right" type="primary" mini>发送验证码</x-button>
+          <x-button slot="right" @click.native="sendCode" action-type="button" type="primary" mini>{{sendCodeText}}</x-button>
         </x-input>
       </group>
       <div></div>
@@ -116,6 +120,8 @@
         sexLabel: "请选择性别",
         sexShow: false,
         uuid: "",
+        sendCodeText: "获取验证码",
+        count: 60,
         radioOption: [{
             key: "1",
             value: "男"
@@ -127,7 +133,9 @@
         ]
       };
     },
+   
     created() {
+      console.log("created")
       if (!localStorage.getItem("uuid")) {
         this.$ajax({
           method: "post",
@@ -142,6 +150,20 @@
       }
     },
     methods: {
+      sendCode() { //发送验证码
+        this.countDown();
+      },
+      countDown() { //倒计时
+        this.sendCodeText = this.count + "秒后重发"
+        let countInterval = setInterval(() => {
+          this.sendCodeText = --this.count + "秒后重发"
+          if (this.count === 0) {
+            clearInterval(countInterval)
+            this.count = 60;
+            this.sendCodeText = "重发验证码"
+          }
+        }, 1000)
+      },
       showRadio() {
         this.sexShow = true;
       },
@@ -154,40 +176,55 @@
         let checkResult = this.checkFileSize(e.target.files, displayName); //表单验证统一处理
         if (checkResult) {
           if (displayName == "video") {
-            this.selectedVideo = true;
+            this.uploadFile(e, displayName, formName);
           } else {
-            let form = new FormData(this.$refs[formName]);
-            form.append("id", this.uuid);
-            this.$ajax({
-              method: "post",
-              url: "/syzxEnterInfo/upload",
-              data: form,
-              headers: {
-                "Content-Type": "multipart/form-data"
-              }
-            }).then(result => {
-              this.selectedImage = true;
-              console.log(result)
-              var reads = new FileReader();
-              reads.readAsDataURL(e.target.files[0]);
-              reads.onload = event => {
-                this.$refs[displayName].src = event.target.result;
-              };
-            })
+            this.uploadFile(e, displayName, formName);
           }
-          this.$vux.toast.text("上传成功");
         }
       },
-      checkFileSize(files, type) {
-        for (let i = 0; i < files.length; i++) {
-          if (type == "video" && files[i].size > 1024 * 1024 * 10) {
-            this.$vux.toast.text("视频大小不能超过10M");
-            return false;
+      uploadFile(e, displayName, formName) { //文件上传统一处理
+        let form = new FormData(this.$refs[formName]);
+        form.append("id", this.uuid);
+        this.$vux.loading.show({
+          text: "上传中"
+        });
+        this.$ajax({
+          method: "post",
+          url: "/syzxEnterInfo/upload",
+          data: form,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(result => {
+          this.$vux.loading.hide();
+          if (displayName == "video") {
+            this.selectedVideo = true;
+            let videoUrl = window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](e.target.files[0]);
+            this.$refs.realVideo.src = videoUrl; //file格式转url
+            this.$vux.toast.text("视频上传成功");
           } else {
-            if (files[i].size > 1024 * 1024 * 2) {
-              this.$vux.toast.text("图片大小不能超过2M");
-              return false;
-            }
+            this.$vux.toast.text("图片上传成功");
+            this.selectedImage = true;
+            var reads = new FileReader();
+            reads.readAsDataURL(e.target.files[0]);
+            reads.onload = event => {
+              this.$refs[displayName].src = event.target.result;
+            };
+          }
+        }).catch((e) => {
+          this.$vux.loading.hide();
+          this.$vux.toast.text("上传失败，请重试");
+          console.error("upload file", e);
+        })
+      },
+      checkFileSize(files, type) {
+        if (type == "video" && files && files[0].size > 1024 * 1024 * 10) {
+          this.$vux.toast.text("视频大小不能超过10M");
+          return false;
+        } else {
+          if (files && files[0].size > 1024 * 1024 * 2) {
+            this.$vux.toast.text("图片大小不能超过2M");
+            return false;
           }
         }
         return true;
@@ -195,6 +232,7 @@
       submitForm() {
         if (!this.checkForm()) return;
         var form = new FormData(this.$refs.form);
+        form.append("id", this.uuid);
         this.$vux.loading.show({
           text: "提交中"
         });
@@ -228,7 +266,7 @@
         if (!this.$refs.name.valid) {
           this.$vux.toast.text("请正确的输入参赛者姓名");
           return false;
-        } else if (!this.$refs.age.valid || !agePattern.test(this.age)) {
+        } else if (!this.$refs.age.valid || this.age === 0 || !agePattern.test(this.age)) {
           this.$vux.toast.text("请填写正确的年龄");
           return false;
         } else if (this.sex == "") {
@@ -306,10 +344,15 @@
 
 
     .video {
-      background: url("../../assets/images/videoupload.jpg") center no-repeat;
-      background-size: cover;
-      width: 98px;
-      height: 105px;
+
+      // background: url("../../assets/images/videoupload.jpg") center no-repeat;
+      // background-size: cover;
+      .video-image {
+        width: 98px;
+        height: 105px;
+        position: absolute;
+      }
+
     }
   }
 

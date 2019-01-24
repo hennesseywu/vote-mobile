@@ -17,44 +17,41 @@ const router = new Router({
       path: '/',
       title: '闪耀之星报名',
       name: 'index',
-      meta:{index:0},
+      meta: {
+        index: 0
+      },
       component: Activity,
     }, {
-      path: '/activity',
+      path: '/vote-mobile',
       title: '闪耀之星报名',
       name: 'activity',
-      meta:{index:1},
+      meta: {
+        index: 1
+      },
       component: Activity,
     },
     {
-      path: '/activity/enter',
+      path: '/vote-mobile/enter',
       title: '闪耀之星报名',
       name: 'activityEnter',
-      meta:{index:2},
+      meta: {
+        index: 2
+      },
       component: ActivityEnter,
     },
     {
-      path: '/activity/success',
+      path: '//vote-mobile/success',
       title: '闪耀之星活动',
-      meta:{index:3},
+      meta: {
+        index: 3
+      },
       name: 'activityEnterSuccess',
       component: ActivityEnterSuccess,
-    },
-
-    {
-      path: "/video",
-      name: "video",
-      component: Video
-    },
-    {
-      path: "/upload",
-      name: "upload",
-      component: Upload
     }
   ]
 })
 router.beforeEach((to, from, next) => {
-
+  console.log("beforeEach", to)
   document.title = to.meta.title ? to.meta.title : '闪耀之星报名';
   if (to.name === "activityEnterSuccess" && !localStorage.getItem("userId")) {
     router.push({
@@ -67,6 +64,11 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+
+router.afterEach(route => {
+  console.log("afterEach")
+
 })
 
 export default router
