@@ -546,7 +546,7 @@ export default {
       .rule-content {
         margin: 0 30px 0 30px;
         width: 599px;
-        height: 580px;
+        height: 600px;
         overflow-x: hidden;
         overflow-y: auto;
       }
