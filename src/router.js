@@ -51,7 +51,6 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
-  console.log("beforeEach", to)
   document.title = to.meta.title ? to.meta.title : '闪耀之星报名';
   if (to.name === "activityEnterSuccess" && !localStorage.getItem("submitForm")) {
     router.push({
@@ -64,11 +63,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-})
-
-router.afterEach(route => {
-  console.log("afterEach")
-
 })
 
 export default router

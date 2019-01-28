@@ -326,7 +326,6 @@ export default {
   },
 
   created() {
-    console.log("created");
     if (!localStorage.getItem("uuid")) {
       this.$ajax({
         method: "post",
@@ -350,7 +349,7 @@ export default {
         return;
       }
       this.$ajax({
-        method: "post",
+        method: "get",
         url: "/syzxEnterInfo/sendSms",
         data: { phone: this.phone }
       }).then(result => {

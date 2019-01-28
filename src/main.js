@@ -14,7 +14,7 @@ import {
   TransferDom
 } from 'vux'
 
-// const vConsole = new Vconsole();
+const vConsole = new Vconsole();
 
 Vue.directive('transfer-dom', TransferDom) //必须有一个 div 作为占位元素否则会出错
 
