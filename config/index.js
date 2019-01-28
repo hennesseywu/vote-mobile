@@ -11,7 +11,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/syzxEnterInfo': {
-                target: 'http://192.168.18.188:9999', //目标接口域名
+                target: 'http://192.168.19.177:9999', //目标接口域名
                 changeOrigin: true //是否跨域
             }
         },

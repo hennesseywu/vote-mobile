@@ -5,6 +5,8 @@
     <div class="introduction"></div>
     <div class="enter-button" @click="toEnter">
     </div>
+    <div class="rule-button" @click="toRule">
+    </div>
     <div class="bottom-logo"></div>
     <div class="bottom-desc">
       <p>四川耀强音传媒有限公司对此次活动保留最终解释权</p>
@@ -53,7 +55,9 @@
         });
       },
       toRule() {
-        this.showRule = true;
+        this.$router.push({
+          name: "activityRule"
+        });
       },
       closeRule() {
         this.showRule = false;
@@ -97,8 +101,16 @@
       background: url("../../assets/images/index-add.png");
       background-size: cover;
       width: 412px;
-      height: 70px;
+      height: 69px;
       margin: 50px 169px 0 169px;
+    }
+
+    .rule-button {
+      background: url("../../assets/images/index-rule.png");
+      background-size: cover;
+      width: 412px;
+      height: 69px;
+      margin: 30px 169px 0 169px;
     }
 
     .bottom-logo {
@@ -106,13 +118,13 @@
       background-size: cover;
       width: 378px;
       height: 62px;
-      margin: 99px 186px 0 186px;
+      margin: 30px 186px 0 186px;
     }
 
     .bottom-desc {
       font-size: 8px;
       color: #ffffff;
-      margin: 99px 0 0 34px;
+      margin: 70px 0 0 34px;
     }
   }
 

@@ -129,9 +129,17 @@
           keyboard="number"
           is-type="china-mobile"
         ></x-input>
-        <x-input title="验证码" placeholder="请输入验证码" class="weui-vcode">
+        <x-input
+          title="验证码"
+          placeholder="请输入验证码"
+          v-model="smsCode"
+          name="smsCode"
+          ref="smsCode"
+          required
+          class="weui-vcode"
+        >
           <x-button
-           :gradients="['#d157fa', '#b60ef0']"
+            :gradients="['#d157fa', '#b60ef0']"
             slot="right"
             @click.native="sendCode"
             action-type="button"
@@ -234,8 +242,8 @@
           ref="remark"
           class="remark"
           :max="200"
-          :height="200"
-          :rows="8"
+          :height="100"
+          :rows="6"
           :autosize="true"
           :show-counter="true"
           placeholder="请对您家宝贝做个简单的介绍(如：姓名、年龄就读几年级、才艺特长、爱好、性格特点等方面)"
@@ -243,7 +251,8 @@
       </group>
       <div></div>
     </form>
-    <div class="add-button">
+    <div class="bottom">
+      <img src="../../assets/images/add-btn.png" @click="submitForm" class="add-button">
     </div>
     <div v-transfer-dom>
       <popup v-model="sexShow" position="bottom" max-height="50%">
@@ -290,7 +299,7 @@ export default {
       sex: "",
       idCard: "",
       phone: "",
-      verifyCode: "", 
+      verifyCode: "",
       video: "video",
       videoFileName: "video",
       remark: "",
@@ -301,6 +310,7 @@ export default {
       sexShow: false,
       uuid: "",
       sendCodeText: "获取验证码",
+      smsCode: "",
       count: 60,
       radioOption: [
         {
@@ -335,8 +345,22 @@ export default {
       this.ruleShow = false;
     },
     sendCode() {
+      if (this.phone == "" || !this.$refs.phone.valid) {
+        this.$vux.toast.text("请填写正确的手机号");
+        return;
+      }
+      this.$ajax({
+        method: "post",
+        url: "/syzxEnterInfo/sendSms",
+        data: { phone: this.phone }
+      }).then(result => {
+        console.log("result", result);
+        if (result.data && result.data.success) {
+          this.$vux.toast.text("验证码发送成功");
+        }
+        this.countDown();
+      });
       //发送验证码
-      this.countDown();
     },
     countDown() {
       //倒计时
@@ -394,7 +418,7 @@ export default {
             this.$vux.toast.text("视频上传成功");
           } else {
             this.$vux.toast.text("照片上传成功");
-            this.selectedImageCount ++;
+            this.selectedImageCount++;
             var reads = new FileReader();
             reads.readAsDataURL(e.target.files[0]);
             reads.onload = event => {
@@ -436,8 +460,8 @@ export default {
         }
       }).then(result => {
         this.$vux.loading.hide();
-        if (result.data.success && result.data.id) {
-          localStorage.setItem("userId", result.data.id);
+        if (result.data && result.data.success) {
+          localStorage.setItem("submitForm", true);
           this.$router.push({
             name: "activityEnterSuccess"
           });
@@ -470,7 +494,7 @@ export default {
       } else if (!idPattern.test(this.idCard)) {
         this.$vux.toast.text("请填写正确的身份证号");
         return false;
-      } else if (this.selectedImageCount<3) {
+      } else if (this.selectedImageCount < 3) {
         this.$vux.toast.text("请上传3-5张图片");
         return false;
       } else if (!this.selectedVideo) {
@@ -481,6 +505,9 @@ export default {
         return false;
       } else if (!this.$refs.phone.valid) {
         this.$vux.toast.text("请填写正确的手机号");
+        return false;
+      } else if (!this.$refs.smsCode.valid) {
+        this.$vux.toast.text("请填写验证码");
         return false;
       } else {
         return true;
@@ -505,7 +532,7 @@ export default {
       height: 514px;
     }
     .rule-pannel {
-      padding-top: 200px;
+      padding-top: 180px;
       width: 659px;
       height: 947px;
       background: #ffde9e;
@@ -519,26 +546,26 @@ export default {
       .rule-content {
         margin: 0 30px 0 30px;
         width: 599px;
-        height: 550px;
+        height: 580px;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
       }
       .rule-desc-title {
         color: #404040;
-        font-size: 20px;
+        font-size: 24px;
         font-weight: bold;
       }
       .rule-desc-content {
         color: #404040;
-        font-size: 18px;
-        line-height: 36px;
+        font-size: 20px;
+        line-height: 32px;
       }
       .rule-button {
         width: 412px;
         height: 69px;
         background: url("../../assets/images/rule-btn.png");
         background-size: cover;
-        margin: 20px 123px 49px 123px;
+        margin: 10px 123px 49px 123px;
       }
     }
   }
@@ -609,11 +636,14 @@ export default {
 
 // }
 
-.add-button {
-   background: url("../../assets/images/add-btn.png");
-    background-size: cover;
+.bottom {
+  text-align: center;
+  margin: 20px 0;
+  .add-button {
+    // background: url("../../assets/images/add-btn.png");
+    // background-size: cover;
     width: 412px;
     height: 69px;
-    margin: 51px 169px;
+  }
 }
 </style>
