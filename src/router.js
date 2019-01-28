@@ -3,8 +3,6 @@ import Router from 'vue-router';
 
 const Activity = () => import('@/pages/activity/index')
 const ActivityEnter = () => import('@/pages/activity/enter')
-const Video = () => import('@/pages/video')
-const Upload = () => import('@/pages/upload')
 
 const ActivityEnterSuccess = () =>
   import('@/pages/activity/success')
@@ -40,7 +38,7 @@ const router = new Router({
       component: ActivityEnter,
     },
     {
-      path: '//vote-mobile/success',
+      path: '/vote-mobile/success',
       title: '闪耀之星活动',
       meta: {
         index: 3

@@ -1,10 +1,8 @@
 <template>
   <div class="success">
-    <div>
-      <img class="icon" src="../../assets/images/success.png">
+    <div class="success-pannel">
+      <img class="icon" src="../../assets/images/success-icon.png">
     </div>
-
-    <div class="success-label">报名成功，请及时查看报名结果</div>
   </div>
 </template>
 
@@ -18,16 +16,23 @@
 <style lang="less">
   .success {
     text-align: center;
+    background: url("../../assets/images/index-bg.png");
+    background-size: cover;
+    width: 750px;
+    height: 100%;
+    text-align: center;
+    padding-top:200px;
+    .success-pannel {
+      margin:0 46px 361px 45px;
+      width: 659px;
+      height: 510px;
+      background: #FFDE9E;
 
-    .icon {
-      margin-top: 100px;
-      width: 300px;
-      height: 300px;
-    }
-
-    .success-label {
-      margin: 50px;
-      font-size: 38px;
+      .icon {
+        margin-top: 100px;
+        width: 290px;
+        height: 200px;
+      }
     }
   }
 
