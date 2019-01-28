@@ -11,6 +11,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
+  base: '/vote-mobile/',
   routes: [{
       path: '/',
       title: '闪耀之星报名',
@@ -20,7 +21,7 @@ const router = new Router({
       },
       component: Activity,
     }, {
-      path: '/vote-mobile',
+      path: '/',
       title: '闪耀之星报名',
       name: 'activity',
       meta: {
@@ -29,7 +30,7 @@ const router = new Router({
       component: Activity,
     },
     {
-      path: '/vote-mobile/enter',
+      path: '/enter',
       title: '闪耀之星报名',
       name: 'activityEnter',
       meta: {
@@ -38,7 +39,7 @@ const router = new Router({
       component: ActivityEnter,
     },
     {
-      path: '/vote-mobile/success',
+      path: '/success',
       title: '闪耀之星活动',
       meta: {
         index: 3
