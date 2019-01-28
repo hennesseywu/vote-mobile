@@ -7,6 +7,6 @@
 
 export default {
    server:{
-     "url":"http://192.168.19.177:8080"//"http://dev-voteservice.zhph.lan" //
+     "url":"http://dev-voteservice.zhph.lan" //"http://192.168.19.177:8080"
    }
 }
