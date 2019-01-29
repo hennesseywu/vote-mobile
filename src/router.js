@@ -15,7 +15,7 @@ const router = new Router({
   routes: [{
       path: '/',
       title: '闪耀之星报名',
-      name: 'index',
+      name: 'activity',
       meta: {
         index: 0 //动画效果顺序
       },

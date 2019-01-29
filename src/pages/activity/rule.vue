@@ -67,7 +67,7 @@
     methods: {
       toIndex() {
         this.$router.push({
-          name: "index"
+          name: "activity"
         });
       }
     },

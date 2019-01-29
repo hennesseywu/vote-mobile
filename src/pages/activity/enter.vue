@@ -113,7 +113,8 @@
         <cell value-align="left">
           <div class="video">
             <form ref="videoForm">
-              <video v-show="selectedVideo" ref="realVideo" class="video-image" src=""></video>
+              <video v-show="selectedVideo" controls ref="realVideo" :src="videoUrl" class="video-image">
+              </video>
               <img class="video-image" v-show="!selectedVideo" ref="videoImg" src="../../assets/images/add-video.png">
               <input type="hidden" name="videoFileName" v-model="videoFileName">
               <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video','videoForm')">
@@ -187,6 +188,7 @@
         sendCodeText: "获取验证码",
         smsCode: "",
         count: 60,
+        videoUrl: "",
         radioOption: [{
             key: "1",
             value: "男"
@@ -255,7 +257,6 @@
         this.sexShow = false;
       },
       onFile(e, displayName, formName) {
-        console.log("e", displayName)
         let checkResult = this.checkFileSize(e.target.files, displayName); //表单验证统一处理
         if (checkResult) {
           if (displayName == "video") {
@@ -265,9 +266,19 @@
           }
         }
       },
+      getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+          url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+          url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+          url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+      },
       uploadFile(e, displayName, formName) {
         console.log("target", e.target.files)
-      
         //文件上传统一处理
         let form = new FormData(this.$refs[formName]);
         form.append("id", this.uuid);
@@ -287,7 +298,6 @@
             if (result.data && result.data.success) {
               if (displayName == "video") {
                 this.selectedVideo = true;
-                console.log("target", e.target.files)
                 let videoUrl = window[window.webkitURL ? "webkitURL" : "URL"][
                   "createObjectURL"
                 ](e.target.files[0]);
@@ -300,11 +310,7 @@
                   "createObjectURL"
                 ](e.target.files[0]);
                 this.$refs[displayName].src = imgUrl;
-                // var reads = new FileReader();
-                // reads.readAsDataURL(e.target.files[0]);
-                // reads.onload = event => {
-                //   this.$refs[displayName].src = event.target.result;
-                // };
+
               }
             } else {
               if (result.data.msg) {
@@ -519,11 +525,11 @@
 
     .video {
       margin-bottom: 10px;
-      height: 140px;
+      height: 135px;
 
       .video-image {
-        width: 140px;
-        height: 140px;
+        width: 135px;
+        height: 135px;
         position: absolute;
       }
     }
