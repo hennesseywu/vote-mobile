@@ -267,27 +267,7 @@
       },
       uploadFile(e, displayName, formName) {
         console.log("target", e.target.files)
-        if (displayName == "video") {
-          this.selectedVideo = true;
-          let videoUrl = window[window.webkitURL ? "webkitURL" : "URL"][
-            "createObjectURL"
-          ](e.target.files[0]);
-          this.$refs.realVideo.src = videoUrl; //file格式转url
-          this.$vux.toast.text("视频上传成功");
-        } else {
-          this.$vux.toast.text("照片上传成功");
-          this.selectedImageCount++;
-          let imgUrl = window[window.webkitURL ? "webkitURL" : "URL"][
-            "createObjectURL"
-          ](e.target.files[0]);
-          this.$refs[displayName].src = imgUrl;
-          // var reads = new FileReader();
-          // reads.readAsDataURL(e.target.files[0]);
-          // reads.onload = event => {
-          //   this.$refs[displayName].src = event.target.result;
-          // };
-        }
-        return;
+      
         //文件上传统一处理
         let form = new FormData(this.$refs[formName]);
         form.append("id", this.uuid);
@@ -501,6 +481,7 @@
       opacity: 0;
       width: 130px;
       height: 130px;
+      margin: 5px;
     }
 
     .file-label {
