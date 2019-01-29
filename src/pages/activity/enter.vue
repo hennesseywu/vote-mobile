@@ -80,31 +80,31 @@
             <div class="photo">
               <form ref="imageForm1">
                 <img class="photo-image" ref="photo1" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo1','imageForm1')">
+                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo1','imageForm1')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm2">
                 <img class="photo-image" ref="photo2" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo2','imageForm2')">
+                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo2','imageForm2')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm3">
                 <img class="photo-image" ref="photo3" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo3','imageForm3')">
+                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo3','imageForm3')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm4">
                 <img class="photo-image" ref="photo4" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo4','imageForm4')">
+                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo4','imageForm4')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm5">
                 <img class="photo-image" ref="photo5" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo5','imageForm5')">
+                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo5','imageForm5')">
               </form>
             </div>
           </div>
@@ -117,7 +117,7 @@
               </video>
               <img class="video-image" v-show="!selectedVideo" ref="videoImg" src="../../assets/images/add-video.png">
               <input type="hidden" name="videoFileName" v-model="videoFileName">
-              <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video','videoForm')">
+              <input type="file" accept="video/mp4" class="file" ref="video" name="video" @change="onFile($event,'video','videoForm')">
             </form>
           </div>
           <label class="photo-desc">注:上传一段您家孩子的才艺展示视频,时长不超过1分钟,大小不超过10M</label>
