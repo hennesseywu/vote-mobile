@@ -113,8 +113,8 @@
         <cell value-align="left">
           <div class="video">
             <form ref="videoForm">
-              <video v-show="selectedVideo" ref="realVideo" class="video-image" src></video>
-              <img v-show="!selectedVideo" class="video-image" ref="videoImg" src="../../assets/images/add-video.png">
+              <video v-show="selectedVideo" ref="realVideo" class="video-image" src=""></video>
+              <img class="video-image" v-show="!selectedVideo" ref="videoImg" src="../../assets/images/add-video.png">
               <input type="hidden" name="videoFileName" v-model="videoFileName">
               <input type="file" accept="video/*" class="file" ref="video" name="video" @change="onFile($event,'video','videoForm')">
             </form>
@@ -255,6 +255,7 @@
         this.sexShow = false;
       },
       onFile(e, displayName, formName) {
+        console.log("e", displayName)
         let checkResult = this.checkFileSize(e.target.files, displayName); //表单验证统一处理
         if (checkResult) {
           if (displayName == "video") {
@@ -265,6 +266,28 @@
         }
       },
       uploadFile(e, displayName, formName) {
+        console.log("target", e.target.files)
+        if (displayName == "video") {
+          this.selectedVideo = true;
+          let videoUrl = window[window.webkitURL ? "webkitURL" : "URL"][
+            "createObjectURL"
+          ](e.target.files[0]);
+          this.$refs.realVideo.src = videoUrl; //file格式转url
+          this.$vux.toast.text("视频上传成功");
+        } else {
+          this.$vux.toast.text("照片上传成功");
+          this.selectedImageCount++;
+          let imgUrl = window[window.webkitURL ? "webkitURL" : "URL"][
+            "createObjectURL"
+          ](e.target.files[0]);
+          this.$refs[displayName].src = imgUrl;
+          // var reads = new FileReader();
+          // reads.readAsDataURL(e.target.files[0]);
+          // reads.onload = event => {
+          //   this.$refs[displayName].src = event.target.result;
+          // };
+        }
+        return;
         //文件上传统一处理
         let form = new FormData(this.$refs[formName]);
         form.append("id", this.uuid);
@@ -281,22 +304,36 @@
           })
           .then(result => {
             this.$vux.loading.hide();
-            if (displayName == "video") {
-              this.selectedVideo = true;
-              let videoUrl = window[window.webkitURL ? "webkitURL" : "URL"][
-                "createObjectURL"
-              ](e.target.files[0]);
-              this.$refs.realVideo.src = videoUrl; //file格式转url
-              this.$vux.toast.text("视频上传成功");
+            if (result.data && result.data.success) {
+              if (displayName == "video") {
+                this.selectedVideo = true;
+                console.log("target", e.target.files)
+                let videoUrl = window[window.webkitURL ? "webkitURL" : "URL"][
+                  "createObjectURL"
+                ](e.target.files[0]);
+                this.$refs.realVideo.src = videoUrl; //file格式转url
+                this.$vux.toast.text("视频上传成功");
+              } else {
+                this.$vux.toast.text("照片上传成功");
+                this.selectedImageCount++;
+                let imgUrl = window[window.webkitURL ? "webkitURL" : "URL"][
+                  "createObjectURL"
+                ](e.target.files[0]);
+                this.$refs[displayName].src = imgUrl;
+                // var reads = new FileReader();
+                // reads.readAsDataURL(e.target.files[0]);
+                // reads.onload = event => {
+                //   this.$refs[displayName].src = event.target.result;
+                // };
+              }
             } else {
-              this.$vux.toast.text("照片上传成功");
-              this.selectedImageCount++;
-              var reads = new FileReader();
-              reads.readAsDataURL(e.target.files[0]);
-              reads.onload = event => {
-                this.$refs[displayName].src = event.target.result;
-              };
+              if (result.data.msg) {
+                this.$vux.toast.text(result.data.msg);
+              } else {
+                this.$vux.toast.text("上传失败，请重试");
+              }
             }
+
           })
           .catch(e => {
             this.$vux.loading.hide();
@@ -309,7 +346,7 @@
           this.$vux.toast.text("视频大小不能超过10M");
           return false;
         } else {
-          if (files && files[0].size > 1024 * 1024 * 2) {
+          if (type.indexOf("photo") > -1 && files && files[0].size > 1024 * 1024 * 2) {
             this.$vux.toast.text("照片大小不能超过2M");
             return false;
           }
@@ -462,8 +499,8 @@
 
     .file {
       opacity: 0;
-      width: 98px;
-      height: 105px;
+      width: 130px;
+      height: 130px;
     }
 
     .file-label {
