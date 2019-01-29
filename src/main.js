@@ -17,9 +17,9 @@ import {
 const vConsole = new Vconsole();
 
 window.env = "local";
-if (window.location.href.indexOf("http://dev-voteproject.zhph.lan/vote-pc/userList") > -1) {
+if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "dev";
-} else if (window.location.href.indexOf("http://voteproject.zhph.lan/vote-pc/userList") > -1) {
+} else if (window.location.href.indexOf("voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "prod";
 }
 
