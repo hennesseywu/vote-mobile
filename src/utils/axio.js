@@ -8,9 +8,7 @@ const axio = axios.create({
 // http request 拦截器 
 axio.interceptors.request.use(
   config => {
-    // if (process.env.NODE_ENV === "production") {
-      config.url = settings.server.url + config.url;
-    // }
+      config.url = settings.server[window.env] + config.url;
     console.log("config", config)
     return config;
   },

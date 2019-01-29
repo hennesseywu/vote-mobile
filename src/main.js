@@ -16,6 +16,14 @@ import {
 
 const vConsole = new Vconsole();
 
+window.env = "local";
+if (window.location.href.indexOf("http://dev-voteproject.zhph.lan/vote-pc/userList") > -1) {
+  window.env = "dev";
+} else if (window.location.href.indexOf("http://voteproject.zhph.lan/vote-pc/userList") > -1) {
+  window.env = "prod";
+}
+
+console.log(env)
 Vue.directive('transfer-dom', TransferDom) //必须有一个 div 作为占位元素否则会出错
 
 Vue.config.productionTip = false
