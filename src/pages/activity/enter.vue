@@ -70,7 +70,7 @@
     </form>
     <div v-transfer-dom>
       <popup v-show="ruleShow" position="top" height="100%" class="rule">
-        <div class="rule-logo-div">
+        <div class="rule-log">
           <img class="rule-logo" src="../../assets/images/rule-logo.png">
         </div>
         <div class="rule-pannel">
@@ -413,21 +413,23 @@
   }
 
   .rule-logo-div {
-    width: 639px;
-    height: 462px;
-    .rule-logo {
-      width: 100%;
-      height: 100%;
-    }
+    width: 500px;
+    height: 361px;
+
+  }
+  .rule-logo {
+    width:100%;
+    height: 100%;
   }
 
   .rule-pannel {
     padding-top: 180px;
     width: 659px;
-    height: 947px;
+    height: 860px;
     background: #ffde9e;
     border-radius: 10px;
-    margin: -240px 46px 0 45px;
+    margin: -250px 46px 0 45px;
+
     .rule-title {
       text-align: center;
       color: #380078;
@@ -437,7 +439,7 @@
     .rule-content {
       margin: 0 30px 0 30px;
       width: 599px;
-      height: 600px;
+      height: 500px;
       overflow-x: hidden;
       overflow-y: auto;
     }

@@ -6,5 +6,5 @@ export default {
   },
   wxUrl: "http://voteproject.zhphfinance.com",
   appid: "wx0d176f2b15375cea",
-  isDebug: false
+  isDebug: true
 }
