@@ -411,13 +411,16 @@
   .rule {
     background: rgba(0, 0, 0, 0.6) !important;
   }
+
   .rule-logo-div {
     width: 100%;
+
+    .rule-logo {
+      width: 100%;
+      height: 100%;
+    }
   }
-  .rule-logo {
-    width:100%;
-    height: 100%;
-  }
+
 
   .rule-pannel {
     padding-top: 180px;
