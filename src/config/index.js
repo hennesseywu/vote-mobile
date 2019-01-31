@@ -4,7 +4,7 @@ export default {
     "prod": "http://voteservice.zhphfinance.com",
     "local": "http://voteservice.zhphfinance.com"
   },
-  wxUrl:"http://voteproject.zhphfinance.com",
+  wxUrl: "http://voteproject.zhphfinance.com",
   appid: "wx0d176f2b15375cea",
-  isDebug:true
+  isDebug: false
 }
