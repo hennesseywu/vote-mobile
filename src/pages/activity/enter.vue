@@ -414,7 +414,7 @@
     background: rgba(0, 0, 0, 0.6) !important;
 
     .rule-logo-div {
-      width:710px;
+      width: 710px;
       height: 530px;
       .rule-logo {
         width: 100%;

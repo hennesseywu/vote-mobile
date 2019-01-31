@@ -1,6 +1,6 @@
 <template>
   <div class="rule">
-    <img class="rule-logo" src="../../assets/images/rule-logo.png">
+    <img class="rule-icon" src="../../assets/images/rule-logo.png">
     <div class="rule-pannel">
       <p class="rule-title">报名规则</p>
       <div class="rule-content">
@@ -79,7 +79,7 @@
   .rule {
     width: 750px;
     background: #ffde9e;
-    .rule-logo {
+    .rule-icon {
       width: 710px;
       height: 514px;
     }
