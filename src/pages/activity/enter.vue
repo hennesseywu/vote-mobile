@@ -350,6 +350,8 @@
             this.$router.push({
               name: "activityEnterSuccess"
             });
+          } else if (result.data && !result.data.success && result.data.msg) {
+            this.$vux.toast.text(result.data.msg);
           } else {
             this.$vux.toast.text("网络开小差啦，请稍后重试");
           }
@@ -404,7 +406,7 @@
 </script>
 <style lang="less">
   .ignore {
-   max-height: 100px;
+    max-height: 100px;
   }
 
   .rule {
