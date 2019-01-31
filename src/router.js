@@ -1,5 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import axio from './utils/axio'
+import config from "./config"
+import {
+  ToastPlugin,
+} from "vux";
+
+Vue.use(ToastPlugin);
 
 const Activity = () => import('@/pages/activity/index')
 const ActivityEnter = () => import('@/pages/activity/enter')
@@ -51,15 +58,50 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  console.log("to", to)
   document.title = to.meta.title ? to.meta.title : '闪耀之星报名';
   if (to.name === "activityEnterSuccess" && !localStorage.getItem("submitForm")) {
     router.push({
       name: "activity"
     })
-  } else if (to.name === "activityEnter" && localStorage.getItem("submitForm")) {
-    router.push({
-      name: "activityEnterSuccess"
-    })
+  } else if (to.name === "activityEnter") {
+    if (localStorage.getItem("wechatId") && localStorage.getItem("submitForm")) {
+      router.push({
+        name: "activityEnterSuccess"
+      })
+    } else {
+      if (config.isDebug) {
+        next()
+        return;
+      }
+      console.log("code", to.query.code)
+      if (to.query.code) {
+        if (localStorage.getItem("wechatId")) {
+          next();
+          return;
+        }
+        axio({
+          method: "post",
+          url: "/syzxEnterInfo/init",
+          data: {
+            code: to.query.code
+          }
+        }).then(result => {
+          if (result.data && result.data.success && result.data.msg) {
+            localStorage.setItem("wechatId", result.data.msg);
+          } else {
+            window.location.href =
+              `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${encodeURIComponent(config.wxUrl)}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;
+          }
+          next();
+        }).catch(() => {
+          Vue.$vux.toast.text("网络开小差啦，请稍后重试");
+        })
+      } else {
+        window.location.href =
+          `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${encodeURIComponent(config.wxUrl)}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;
+      }
+    }
   } else {
     next()
   }

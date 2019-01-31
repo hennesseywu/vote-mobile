@@ -81,31 +81,31 @@
             <div class="photo">
               <form ref="imageForm1">
                 <img class="photo-image" ref="photo1" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo1','imageForm1')">
+                <input type="file" accept="image/*" class="file" name="photo1" @change="onFile($event,'photo1','imageForm1')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm2">
                 <img class="photo-image" ref="photo2" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo2','imageForm2')">
+                <input type="file" accept="image/*" class="file" name="photo2" @change="onFile($event,'photo2','imageForm2')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm3">
                 <img class="photo-image" ref="photo3" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo3','imageForm3')">
+                <input type="file" accept="image/*" class="file" name="photo3" @change="onFile($event,'photo3','imageForm3')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm4">
                 <img class="photo-image" ref="photo4" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo4','imageForm4')">
+                <input type="file" accept="image/*" class="file" name="photo4" @change="onFile($event,'photo4','imageForm4')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm5">
                 <img class="photo-image" ref="photo5" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo5','imageForm5')">
+                <input type="file" accept="image/*" class="file" name="photo5" @change="onFile($event,'photo5','imageForm5')">
               </form>
             </div>
           </div>
@@ -141,8 +141,9 @@
   </div>
 </template>
 <script>
-  import config from "../../config"
   import Vue from "vue";
+  import config from "../../config"
+
   import {
     XInput,
     Group,
@@ -204,24 +205,15 @@
       };
     },
     created() {
-      // if (this.$route.query.code) {
-      //   this.$ajax({
-      //     method: "post",
-      //     url: "/syzxEnterInfo/init",
-      //     data: {
-      //       code: this.$route.query.code
-      //     }
-      //   }).then(result => {
-      //     console.log("openId", result.data);
-      //     this.uuid = result.data;
-      //     localStorage.setItem("uuid", result.data);
-      //   });
-      // } else if (localStorage.getItem("uuid")) {
-      //   console.log("openid")
-      // } else {
-      //   window.location.href =
-      //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${config.wxLogin}&response_type=code&scope=snsapi_base#wechat_redirect`;
-      // }
+      if (config.isDebug) {
+        return;
+      }
+      if (localStorage.getItem("wechatId")) {
+        this.wechatId = localStorage.getItem("wechatId");
+      } else {
+        window.location.href =
+          `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${encodeURIComponent(config.wxUrl)}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;
+      }
     },
     methods: {
       closeRule() {
@@ -303,27 +295,24 @@
           })
           .then(result => {
             this.$vux.loading.hide();
-            if (result.data && result.data.success) {
+            if (result.data && result.data.success && result.data.msg) {
               if (displayName == "video") {
                 this.selectedVideo = true;
-                let videoUrl = this.getObjectURL(e.target.files[0]);
-                this.$refs.realVideo.src = videoUrl; //file格式转url
+                this.$refs.realVideo.src = result.data.msg; //file格式转url
                 this.$vux.toast.text("视频上传成功");
               } else {
                 this.$vux.toast.text("照片上传成功");
                 this.selectedImageCount++;
-                let imgUrl = this.getObjectURL(e.target.files[0]);
-                this.$refs[displayName].src = imgUrl;
-
+                this.$refs[displayName].src = result.data.msg;
               }
             } else {
-              this.$vux.toast.text("报名人数太多，请稍后重试邓");
+              this.$vux.toast.text("网络开小差啦，请稍后重试");
             }
 
           })
           .catch(e => {
             this.$vux.loading.hide();
-            this.$vux.toast.text("报名人数太多，请稍后重试邓");
+            this.$vux.toast.text("网络开小差啦，请稍后重试");
             console.error("upload file", e);
           });
       },
@@ -361,7 +350,7 @@
               name: "activityEnterSuccess"
             });
           } else {
-            this.$vux.toast.text("报名人数太多，请稍后重试邓");
+            this.$vux.toast.text("网络开小差啦，请稍后重试");
           }
         });
         return;
