@@ -14,16 +14,15 @@ import {
   TransferDom
 } from 'vux'
 
-const vConsole = new Vconsole();
 
 window.env = "local";
 if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "dev";
+  const vConsole = new Vconsole();
 } else if (window.location.href.indexOf("voteproject.zhphfinance.com/vote-mobile") > -1) {
   window.env = "prod";
 }
 
-console.log(env)
 Vue.directive('transfer-dom', TransferDom) //必须有一个 div 作为占位元素否则会出错
 
 Vue.config.productionTip = false
