@@ -513,6 +513,7 @@
         display: flex;
 
         .photo {
+          position: relative;
           width: 130px;
           height: 130px;
           margin: 5px;
