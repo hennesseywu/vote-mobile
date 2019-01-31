@@ -57,21 +57,19 @@
           margin: 20px 180px;
 
           .icon {
-            margin-top: 100px;
+            margin-top: 20%;
             width: 100%;
             height: 100%;
           }
         }
-
         .btn-div {
           width: 412px;
           height: 69px;
           margin: 80px 120px;
-
           .btn {
             width: 100%;
             height: 100%;
-            margin-top: 100px;
+            margin-top: 20%;
 
           }
         }
