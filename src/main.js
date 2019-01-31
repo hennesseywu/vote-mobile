@@ -15,7 +15,7 @@ import {
 } from 'vux'
 
 window.env = "prod";
-const vConsole = new Vconsole();
+// const vConsole = new Vconsole();
 
 if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "dev";
