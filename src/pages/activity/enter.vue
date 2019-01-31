@@ -76,7 +76,6 @@
           <x-button :gradients="['#d157fa', '#b60ef0']" slot="right" @click.native="sendCode" action-type="button" mini>{{sendCodeText}}</x-button>
         </x-input>
         <cell value-align="left">
-          <label class="photo-desc">提醒：请先填写完基本信息后再上传照片和视频</label>
           <div class="photo-group">
             <div class="photo">
               <form ref="imageForm1">
