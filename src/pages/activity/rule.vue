@@ -75,7 +75,7 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .rule {
     width: 750px;
     background: #ffde9e;
