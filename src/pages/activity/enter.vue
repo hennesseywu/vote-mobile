@@ -70,7 +70,7 @@
     </form>
     <div v-transfer-dom>
       <popup v-show="ruleShow" position="top" height="100%" class="rule">
-        <div class="rule-log">
+        <div class="rule-logo-div">
           <img class="rule-logo" src="../../assets/images/rule-logo.png">
         </div>
         <div class="rule-pannel">
@@ -411,11 +411,8 @@
   .rule {
     background: rgba(0, 0, 0, 0.6) !important;
   }
-
   .rule-logo-div {
-    width: 500px;
-    height: 361px;
-
+    width: 100%;
   }
   .rule-logo {
     width:100%;
