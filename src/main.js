@@ -19,7 +19,7 @@ const vConsole = new Vconsole();
 window.env = "local";
 if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "dev";
-} else if (window.location.href.indexOf("voteproject.zhph.lan/vote-mobile") > -1) {
+} else if (window.location.href.indexOf("voteproject.zhphfinance.com/vote-mobile") > -1) {
   window.env = "prod";
 }
 
