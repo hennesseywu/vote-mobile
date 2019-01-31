@@ -76,35 +76,36 @@
           <x-button :gradients="['#d157fa', '#b60ef0']" slot="right" @click.native="sendCode" action-type="button" mini>{{sendCodeText}}</x-button>
         </x-input>
         <cell value-align="left">
+          <label class="photo-desc">提醒：请先填写完基本信息后再上传照片和视频</label>
           <div class="photo-group">
             <div class="photo">
               <form ref="imageForm1">
                 <img class="photo-image" ref="photo1" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo1','imageForm1')">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo1','imageForm1')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm2">
                 <img class="photo-image" ref="photo2" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo2','imageForm2')">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo2','imageForm2')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm3">
                 <img class="photo-image" ref="photo3" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo3','imageForm3')">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo3','imageForm3')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm4">
                 <img class="photo-image" ref="photo4" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo4','imageForm4')">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo4','imageForm4')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm5">
                 <img class="photo-image" ref="photo5" src="../../assets/images/add-image.png">
-                <input type="file" accept="image/bmp,image/png,image/jpeg,image/jpg,image/gif" class="file" name="photo" @change="onFile($event,'photo5','imageForm5')">
+                <input type="file" accept="image/*" class="file" name="photo" @change="onFile($event,'photo5','imageForm5')">
               </form>
             </div>
           </div>
@@ -140,6 +141,7 @@
   </div>
 </template>
 <script>
+  import config from "../../config"
   import Vue from "vue";
   import {
     XInput,
@@ -184,6 +186,7 @@
         selectedVideo: false,
         sexLabel: "请选择性别",
         sexShow: false,
+        wechatId: "",
         uuid: "",
         sendCodeText: "获取验证码",
         smsCode: "",
@@ -200,20 +203,25 @@
         ]
       };
     },
-
     created() {
-      if (!localStorage.getItem("uuid")) {
-        this.$ajax({
-          method: "post",
-          url: "/syzxEnterInfo/init"
-        }).then(result => {
-          this.uuid = result.data;
-          localStorage.setItem("uuid", result.data);
-          console.log(result.data);
-        });
-      } else {
-        this.uuid = localStorage.getItem("uuid");
-      }
+      // if (this.$route.query.code) {
+      //   this.$ajax({
+      //     method: "post",
+      //     url: "/syzxEnterInfo/init",
+      //     data: {
+      //       code: this.$route.query.code
+      //     }
+      //   }).then(result => {
+      //     console.log("openId", result.data);
+      //     this.uuid = result.data;
+      //     localStorage.setItem("uuid", result.data);
+      //   });
+      // } else if (localStorage.getItem("uuid")) {
+      //   console.log("openid")
+      // } else {
+      //   window.location.href =
+      //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${config.wxLogin}&response_type=code&scope=snsapi_base#wechat_redirect`;
+      // }
     },
     methods: {
       closeRule() {
@@ -225,10 +233,10 @@
           return;
         }
         this.$ajax.post("/syzxEnterInfo/sendSms", {
-            phone: this.phone
+            phone: this.phone,
+            wechatId: this.wechatId
           })
           .then(result => {
-            console.log("result", result);
             if (result.data && result.data.success) {
               this.$vux.toast.text("验证码发送成功");
             }
@@ -281,7 +289,7 @@
         console.log("target", e.target.files)
         //文件上传统一处理
         let form = new FormData(this.$refs[formName]);
-        form.append("id", this.uuid);
+        form.append("wechatId", this.wechatId);
         this.$vux.loading.show({
           text: "上传中"
         });
@@ -298,32 +306,24 @@
             if (result.data && result.data.success) {
               if (displayName == "video") {
                 this.selectedVideo = true;
-                let videoUrl = window[window.webkitURL ? "webkitURL" : "URL"][
-                  "createObjectURL"
-                ](e.target.files[0]);
+                let videoUrl = this.getObjectURL(e.target.files[0]);
                 this.$refs.realVideo.src = videoUrl; //file格式转url
                 this.$vux.toast.text("视频上传成功");
               } else {
                 this.$vux.toast.text("照片上传成功");
                 this.selectedImageCount++;
-                let imgUrl = window[window.webkitURL ? "webkitURL" : "URL"][
-                  "createObjectURL"
-                ](e.target.files[0]);
+                let imgUrl = this.getObjectURL(e.target.files[0]);
                 this.$refs[displayName].src = imgUrl;
 
               }
             } else {
-              if (result.data.msg) {
-                this.$vux.toast.text(result.data.msg);
-              } else {
-                this.$vux.toast.text("上传失败，请重试");
-              }
+              this.$vux.toast.text("报名人数太多，请稍后重试邓");
             }
 
           })
           .catch(e => {
             this.$vux.loading.hide();
-            this.$vux.toast.text("上传失败，请重试");
+            this.$vux.toast.text("报名人数太多，请稍后重试邓");
             console.error("upload file", e);
           });
       },
@@ -342,7 +342,7 @@
       submitForm() {
         if (!this.checkForm()) return;
         var form = new FormData(this.$refs.form);
-        form.append("id", this.uuid);
+        form.append("wechatId", this.wechatId);
         this.$vux.loading.show({
           text: "提交中"
         });
@@ -361,9 +361,7 @@
               name: "activityEnterSuccess"
             });
           } else {
-            if (result.data.msg) {
-              this.$vux.toast.text(result.data.msg);
-            }
+            this.$vux.toast.text("报名人数太多，请稍后重试邓");
           }
         });
         return;
@@ -395,10 +393,12 @@
         } else if (!this.selectedVideo) {
           this.$vux.toast.text("请上传视频");
           return false;
-        } else if (this.remark == "") {
-          this.$vux.toast.text("请填写介绍信息");
-          return false;
-        } else if (!this.$refs.phone.valid) {
+        }
+        // else if (this.remark == "") {
+        //   this.$vux.toast.text("请填写介绍信息");
+        //   return false;
+        // }
+        else if (!this.$refs.phone.valid) {
           this.$vux.toast.text("请填写正确的手机号");
           return false;
         } else if (!this.$refs.smsCode.valid) {
@@ -519,7 +519,7 @@
     }
 
     .photo-desc {
-      font-size: 14px;
+      font-size: 20px;
       color: #999999;
     }
 
