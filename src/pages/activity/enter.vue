@@ -308,9 +308,8 @@
                 this.$refs[displayName].src = result.data.msg;
               }
             } else {
-              this.$vux.toast.text("网络开小差啦，请稍后重试");
+              this.$vux.toast.text("视频格式有误，只支持MP4格式");
             }
-
           })
           .catch(e => {
             this.$vux.loading.hide();
@@ -416,6 +415,7 @@
     .rule-image-div {
       width: 710px;
       height: 530px;
+
       .rule-image {
         width: 100%;
         height: 100%;
@@ -532,7 +532,6 @@
 
       .video {
         margin-bottom: 10px;
-        height: 135px;
         width: 130px;
         height: 130px;
 
