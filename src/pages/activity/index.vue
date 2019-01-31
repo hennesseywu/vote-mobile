@@ -5,7 +5,10 @@
     <div class="introduction"></div>
     <div class="enter-button" @click="toEnter">
     </div>
-    <div class="rule-button" @click="toRule">
+    <div class="bottom-rule">
+      <a class="rule-button" @click="toRule">
+        报名规则
+      </a>
     </div>
     <div class="bottom-logo"></div>
     <div class="bottom-desc">
@@ -105,13 +108,16 @@
       margin: 50px 169px 0 169px;
     }
 
-    .rule-button {
-      background: url("../../assets/images/index-rule.png");
-      background-size: cover;
-      width: 412px;
-      height: 69px;
-      margin: 30px 169px 0 169px;
+    .bottom-rule {
+      text-align: center;
+      margin-top: 30px;
+      .rule-button {
+        text-decoration:underline;
+        color: #ffffff;
+        font-size: 32px;
+      }
     }
+
 
     .bottom-logo {
       background: url("../../assets/images/index-icon.png");
