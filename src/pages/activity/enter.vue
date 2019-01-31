@@ -18,31 +18,31 @@
           <div class="photo-group">
             <div class="photo">
               <form ref="imageForm1">
-                <img class="photo-image" ref="photo1" src="../../assets/images/add-image.png">
+                <img class="photo-image ignore" ref="photo1" src="../../assets/images/add-image.png">
                 <input type="file" accept="image/*" class="file" name="photo1" @change="onFile($event,'photo1','imageForm1')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm2">
-                <img class="photo-image" ref="photo2" src="../../assets/images/add-image.png">
+                <img class="photo-image ignore" ref="photo2" src="../../assets/images/add-image.png">
                 <input type="file" accept="image/*" class="file" name="photo2" @change="onFile($event,'photo2','imageForm2')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm3">
-                <img class="photo-image" ref="photo3" src="../../assets/images/add-image.png">
+                <img class="photo-image ignore" ref="photo3" src="../../assets/images/add-image.png">
                 <input type="file" accept="image/*" class="file" name="photo3" @change="onFile($event,'photo3','imageForm3')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm4">
-                <img class="photo-image" ref="photo4" src="../../assets/images/add-image.png">
+                <img class="photo-image ignore" ref="photo4" src="../../assets/images/add-image.png">
                 <input type="file" accept="image/*" class="file" name="photo4" @change="onFile($event,'photo4','imageForm4')">
               </form>
             </div>
             <div class="photo">
               <form ref="imageForm5">
-                <img class="photo-image" ref="photo5" src="../../assets/images/add-image.png">
+                <img class="photo-image ignore" ref="photo5" src="../../assets/images/add-image.png">
                 <input type="file" accept="image/*" class="file" name="photo5" @change="onFile($event,'photo5','imageForm5')">
               </form>
             </div>
@@ -52,7 +52,7 @@
         <cell value-align="left">
           <div class="video">
             <form ref="videoForm">
-              <video v-show="selectedVideo" controls ref="realVideo" :src="videoUrl" class="video-image">
+              <video v-show="selectedVideo" controls ref="realVideo" :src="videoUrl" class="video-image ignore">
               </video>
               <img class="video-image" v-show="!selectedVideo" ref="videoImg" src="../../assets/images/add-video.png">
               <input type="hidden" name="videoFileName" v-model="videoFileName">
@@ -402,7 +402,11 @@
   };
 
 </script>
-<style lang="less" scoped>
+<style lang="less">
+  .ignore {
+   max-height: 100px;
+  }
+
   .rule {
     position: fixed;
     top: 0;
@@ -470,9 +474,6 @@
   }
 
 
-
-
-
   .enter {
     position: relative;
 
@@ -523,6 +524,11 @@
           width: 100%;
           height: 100%;
         }
+      }
+
+
+      .ignore {
+        max-height: 80px;
       }
 
       .photo-desc {
