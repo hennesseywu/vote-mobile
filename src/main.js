@@ -13,12 +13,11 @@ FastClick.attach(document.body)
 import {
   TransferDom
 } from 'vux'
-
+const vConsole = new Vconsole();
 
 window.env = "prod";
 if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "dev";
-  const vConsole = new Vconsole();
 } else if (window.location.href.indexOf("voteproject.zhphfinance.com/vote-mobile") > -1) {
   window.env = "prod";
 }

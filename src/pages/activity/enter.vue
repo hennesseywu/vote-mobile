@@ -63,14 +63,16 @@
         </cell>
         <x-textarea required v-model="remark" name="remark" inline-desc="简介" ref="remark" class="remark" :max="200"
           :height="100" :rows="6" :autosize="true" :show-counter="true" placeholder="请对您家宝贝做个简单的介绍(如：姓名、年龄就读几年级、才艺特长、爱好、性格特点等方面)"></x-textarea>
+        <div class="bottom">
+          <img src="../../assets/images/add-btn.png" @click="submitForm" class="add-button">
+        </div>
       </group>
-      <div class="bottom">
-        <img src="../../assets/images/add-btn.png" @click="submitForm" class="add-button">
-      </div>
     </form>
     <div v-transfer-dom>
       <popup v-show="ruleShow" position="top" height="100%" class="rule">
-        <img class="rule-logo" src="../../assets/images/rule-logo.png">
+        <div class="rule-logo-div">
+          <img class="rule-logo" src="../../assets/images/rule-logo.png">
+        </div>
         <div class="rule-pannel">
           <p class="rule-title">报名规则</p>
           <div class="rule-content">
@@ -183,7 +185,7 @@
         video: "video",
         videoFileName: "video",
         remark: "",
-        ruleShow: false,
+        ruleShow: true,
         selectedImageCount: 0,
         selectedVideo: false,
         sexLabel: "请选择性别",
@@ -407,13 +409,16 @@
 </script>
 <style lang="less">
   .rule {
-   
     background: rgba(0, 0, 0, 0.6) !important;
   }
 
-  .rule-logo {
-    width: 710px;
-    height: 514px;
+  .rule-logo-div {
+    width: 639px;
+    height: 462px;
+    .rule-logo {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .rule-pannel {
@@ -422,8 +427,7 @@
     height: 947px;
     background: #ffde9e;
     border-radius: 10px;
-    margin: -220px 46px 0 45px;
-
+    margin: -240px 46px 0 45px;
     .rule-title {
       text-align: center;
       color: #380078;
@@ -461,7 +465,7 @@
   }
 
   .enter {
-
+    position: relative;
 
     .form {
       .logo {
@@ -477,9 +481,11 @@
 
       .file {
         opacity: 0;
+        top: 0;
+        left: 5px;
+        position: absolute;
         width: 130px;
         height: 130px;
-        margin: 5px;
       }
 
       .file-label {
@@ -504,9 +510,8 @@
         }
 
         .photo-image {
-          width: 130px;
-          height: 130px;
-          position: absolute;
+          width: 100%;
+          height: 100%;
         }
       }
 
@@ -518,11 +523,12 @@
       .video {
         margin-bottom: 10px;
         height: 135px;
+        width: 130px;
+        height: 130px;
 
         .video-image {
-          width: 135px;
-          height: 135px;
-          position: absolute;
+          width: 100%;
+          height: 100%;
         }
       }
     }
@@ -533,16 +539,17 @@
     }
 
     // }
-
     .bottom {
       text-align: center;
-      margin: 20px 0;
+      margin: 20px 149px;
+      width: 412px;
+      height: 69px;
 
       .add-button {
         // background: url("../../assets/images/add-btn.png");
         // background-size: cover;
-        width: 412px;
-        height: 69px;
+        width: 100%;
+        height: 100%;
       }
     }
   }
