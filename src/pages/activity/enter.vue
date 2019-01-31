@@ -69,8 +69,8 @@
       </group>
     </form>
     <div v-show="ruleShow" class="rule">
-      <div class="rule-logo-div">
-        <img class="rule-logo" src="../../assets/images/rule-logo.png">
+      <div class="rule-image-div">
+        <img class="rule-image" src="../../assets/images/rule-logo.png">
       </div>
       <div class="rule-pannel">
         <p class="rule-title">报名规则</p>
@@ -413,10 +413,10 @@
     height: 1334px;
     background: rgba(0, 0, 0, 0.6) !important;
 
-    .rule-logo-div {
+    .rule-image-div {
       width: 710px;
       height: 530px;
-      .rule-logo {
+      .rule-image {
         width: 100%;
         height: 100%;
       }
