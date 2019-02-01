@@ -66,7 +66,8 @@ router.beforeEach((to, from, next) => {
     router.push({
       name: "activity"
     })
-  } else if (to.name === "activityEnter") {
+  } else
+  if (to.name === "activityEnter") {
     if (Cookie.get("wechatId") && Cookie.get("submitForm")) {
       router.push({
         name: "activityEnterSuccess"

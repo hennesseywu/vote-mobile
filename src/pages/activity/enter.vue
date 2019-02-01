@@ -72,9 +72,9 @@
       <div class="rule-image-div">
         <img class="rule-image" src="../../assets/images/rule-logo.png">
       </div>
-      
+
       <div class="rule-pannel">
-        <p class="rule-title">报名规则</p>
+        <div class="rule-title"></div>
         <div class="rule-content">
           <p class="rule-desc-title">一、 活动介绍：</p>
           <p class="rule-desc-content">
@@ -435,9 +435,11 @@
         margin: -250px 46px 0 45px;
 
         .rule-title {
-          text-align: center;
-          color: #380078;
-          font-size: 44px;
+          background: url("../../assets/images/add-rule-title.png");
+          background-size: cover;
+          width: 170px;
+          height: 42px;
+          margin: 10px 224px;
         }
 
         .rule-content {

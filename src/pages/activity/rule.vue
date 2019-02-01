@@ -76,14 +76,14 @@
 
       .rule-desc-title {
         color: #404040;
-        font-size: 32px;
+        font-size: 34px;
         font-weight: bold;
       }
 
       .rule-desc-content {
         color: #404040;
         font-size: 24px;
-        line-height: 32px;
+        line-height: 34px;
       }
 
       .btn-div {

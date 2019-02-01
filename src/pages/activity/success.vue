@@ -55,7 +55,7 @@
         .icon-div {
           width: 290px;
           height: 250px;
-          margin: 20px 180px;
+          margin: 115px 180px;
           padding-top: 30px;
           .icon {
             width: 100%;
@@ -71,8 +71,6 @@
           .btn {
             width: 100%;
             height: 100%;
-            margin-top: 20%;
-
           }
         }
 
