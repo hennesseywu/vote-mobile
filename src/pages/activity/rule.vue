@@ -4,7 +4,7 @@
       <img class="rule-icon" src="../../assets/images/rule-logo.png">
     </div>
     <div class="rule-pannel">
-      <p class="rule-title">报名规则</p>
+      <p class="rule-title">活动详情</p>
       <div class="rule-content">
         <p class="rule-desc-title">一、 活动介绍：</p>
         <p class="rule-desc-content">
@@ -27,6 +27,7 @@
         <p class="rule-desc-content">1．比赛时间：2—5月份</p>
         <p class="rule-desc-content">2．入选者将会收到短信通知、微信提醒或电话通知，到导演组指定地点进行复试。</p>
         <p class="rule-desc-content">3．复试通过者会有导演组进行电话通知，并确定拍摄时间。</p>
+        <p class="rule-desc-content">本协议以及其修改权、更新权及最终解释权均属主办方所有。</p>
       </div>
       <div class="btn-div">
         <img class="btn" src="../../assets/images/success-btn.png" @click="toIndex">

@@ -72,8 +72,9 @@
       <div class="rule-image-div">
         <img class="rule-image" src="../../assets/images/rule-logo.png">
       </div>
+      
       <div class="rule-pannel">
-        <p class="rule-title">活动详情</p>
+        <p class="rule-title">报名规则</p>
         <div class="rule-content">
           <p class="rule-desc-title">一、 活动介绍：</p>
           <p class="rule-desc-content">
@@ -129,8 +130,6 @@
           <p class="rule-desc-content">4．本协议未涉及的问题参见国家有关法律法规，当本协议与国家法律法规冲突时，以国家法律法规为准。</p>
           <p class="rule-desc-content">解释权约定 ：</p>
           <p class="rule-desc-content">本协议以及其修改权、更新权及最终解释权均属主办方所有。</p>
-
-
         </div>
         <div class="rule-button" @click="closeRule"></div>
       </div>
@@ -405,12 +404,6 @@
 
 </script>
 <style lang="less">
-  .ignore {
-    max-height: 100px;
-  }
-
-
-
   .enter {
     position: relative;
 
@@ -494,9 +487,8 @@
 
       .file {
         opacity: 0;
-        top: 0;
-        left: 5px;
-        position: absolute;
+        position: fixed;
+        z-index: 100;
         width: 130px;
         height: 130px;
       }
@@ -526,13 +518,10 @@
         .photo-image {
           width: 100%;
           height: 100%;
+          position: absolute;
         }
       }
 
-
-      .ignore {
-        max-height: 80px;
-      }
 
       .photo-desc {
         font-size: 20px;
@@ -543,10 +532,12 @@
         margin-bottom: 10px;
         width: 130px;
         height: 130px;
+        position: relative;
 
         .video-image {
           width: 100%;
           height: 100%;
+          position: absolute;
         }
       }
     }
