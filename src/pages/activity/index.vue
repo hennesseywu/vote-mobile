@@ -85,9 +85,9 @@
     .title {
       background: url("../../assets/images/index-title.png");
       background-size: cover;
-      width: 492px;
-      height: 142px;
-      margin: 0px 129px 0 129px;
+      width:523px;
+      height: 173px;
+      margin: 0px 113px 0 114px;
     }
 
     .introduction {
