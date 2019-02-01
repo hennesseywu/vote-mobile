@@ -62,12 +62,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   console.log("to", to)
   document.title = to.meta.title ? to.meta.title : '闪耀之星报名';
-  // if (to.name === "activityEnterSuccess" && !Cookie.get("submitForm")) {
-  //   router.push({
-  //     name: "activity"
-  //   })
-  // } else 
-  if (to.name === "activityEnter") {
+  if (to.name === "activityEnterSuccess" && !Cookie.get("submitForm")) {
+    router.push({
+      name: "activity"
+    })
+  } else if (to.name === "activityEnter") {
     if (Cookie.get("wechatId") && Cookie.get("submitForm")) {
       router.push({
         name: "activityEnterSuccess"

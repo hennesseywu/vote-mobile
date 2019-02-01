@@ -70,8 +70,6 @@
 
 </script>
 <style lang="less">
-  .ignore-bottom-font { }
-
   .activity {
     text-align: center;
     background: url("../../assets/images/index-bg.png");
@@ -89,13 +87,13 @@
       background-size: cover;
       width: 492px;
       height: 142px;
-      margin: 20px 129px 0 129px;
+      margin: 0px 129px 0 129px;
     }
 
     .introduction {
       background: url("../../assets/images/index-introduction.png");
       background-size: cover;
-      margin: 46px 197px 0 197px;
+      margin: 26px 197px 0 197px;
       width: 356px;
       height: 163px;
     }
@@ -110,7 +108,7 @@
 
     .bottom-rule {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 20px;
 
       .rule-button {
         text-decoration: underline;
@@ -125,13 +123,12 @@
       background-size: cover;
       width: 378px;
       height: 62px;
-      margin: 30px 186px 0 186px;
+      margin: 20px 186px 0 186px;
     }
 
     .bottom-desc {
-
       color: #ffffff;
-      margin: 70px 0 0 34px;
+      margin: 30px 0 0 34px;
     }
   }
 
