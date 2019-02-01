@@ -439,7 +439,7 @@
           background-size: cover;
           width: 170px;
           height: 42px;
-          margin: 10px 224px;
+          margin: 10px 240px;
         }
 
         .rule-content {

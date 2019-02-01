@@ -82,8 +82,8 @@
 
       .rule-desc-content {
         color: #404040;
-        font-size: 24px;
-        line-height: 34px;
+        font-size: 25px;
+        line-height: 38px;
       }
 
       .btn-div {
