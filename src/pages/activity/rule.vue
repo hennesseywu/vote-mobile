@@ -1,6 +1,8 @@
 <template>
   <div class="rule">
-    <img class="rule-icon" src="../../assets/images/rule-logo.png">
+    <div class="rule-icon-div">
+      <img class="rule-icon" src="../../assets/images/rule-logo.png">
+    </div>
     <div class="rule-pannel">
       <p class="rule-title">报名规则</p>
       <div class="rule-content">
@@ -79,14 +81,21 @@
   .rule {
     width: 750px;
     background: #ffde9e;
-    .rule-icon {
-      width: 710px;
-      height: 514px;
+
+    .rule-icon-div {
+       width: 710px;
+        height: 514px;
+      .rule-icon {
+        width: 100%;
+        height: 100%;
+      }
     }
+
 
     .rule-pannel {
       margin: -20px 40px;
       padding-bottom: 20px;
+
       .rule-title {
         text-align: center;
         color: #380078;

@@ -409,75 +409,76 @@
     max-height: 100px;
   }
 
-  .rule {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    width: 750px;
-    height: 1334px;
-    background: rgba(0, 0, 0, 0.6) !important;
-
-    .rule-image-div {
-      width: 710px;
-      height: 530px;
-
-      .rule-image {
-        width: 100%;
-        height: 100%;
-      }
-    }
-
-    .rule-pannel {
-      padding-top: 180px;
-      width: 659px;
-      height: 860px;
-      background: #ffde9e;
-      border-radius: 10px;
-      margin: -250px 46px 0 45px;
-
-      .rule-title {
-        text-align: center;
-        color: #380078;
-        font-size: 44px;
-      }
-
-      .rule-content {
-        margin: 0 30px 0 30px;
-        width: 599px;
-        height: 500px;
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
-
-      .rule-desc-title {
-        color: #404040;
-        font-size: 24px;
-        font-weight: bold;
-      }
-
-      .rule-desc-content {
-        color: #404040;
-        font-size: 20px;
-        line-height: 32px;
-      }
-
-      .rule-button {
-        width: 412px;
-        height: 69px;
-        background: url("../../assets/images/rule-btn.png");
-        background-size: cover;
-        margin: 10px 123px 49px 123px;
-      }
-
-
-    }
-
-  }
 
 
   .enter {
     position: relative;
+
+    .rule {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 750px;
+      height: 1334px;
+      background: rgba(0, 0, 0, 0.6) !important;
+
+      .rule-image-div {
+        width: 710px;
+        height: 530px;
+
+        .rule-image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .rule-pannel {
+        padding-top: 180px;
+        width: 659px;
+        height: 860px;
+        background: #ffde9e;
+        border-radius: 10px;
+        margin: -250px 46px 0 45px;
+
+        .rule-title {
+          text-align: center;
+          color: #380078;
+          font-size: 44px;
+        }
+
+        .rule-content {
+          margin: 0 30px 0 30px;
+          width: 599px;
+          height: 500px;
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+
+        .rule-desc-title {
+          color: #404040;
+          font-size: 24px;
+          font-weight: bold;
+        }
+
+        .rule-desc-content {
+          color: #404040;
+          font-size: 20px;
+          line-height: 32px;
+        }
+
+        .rule-button {
+          width: 412px;
+          height: 69px;
+          background: url("../../assets/images/rule-btn.png");
+          background-size: cover;
+          margin: 10px 123px 49px 123px;
+        }
+
+      }
+
+    }
+
 
     .form {
       .logo {
