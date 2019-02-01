@@ -77,6 +77,7 @@
         color: #404040;
         font-size: 30px;
         font-weight: bold;
+        margin-top: 10px;
       }
 
       .rule-desc-content {
