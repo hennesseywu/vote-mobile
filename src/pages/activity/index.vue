@@ -7,7 +7,7 @@
     </div>
     <div class="bottom-rule">
       <a class="rule-button" @click="toRule">
-        报名规则
+        活动详情
       </a>
     </div>
     <div class="bottom-logo"></div>

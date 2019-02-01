@@ -73,7 +73,7 @@
         <img class="rule-image" src="../../assets/images/rule-logo.png">
       </div>
       <div class="rule-pannel">
-        <p class="rule-title">报名规则</p>
+        <p class="rule-title">活动详情</p>
         <div class="rule-content">
           <p class="rule-desc-title">一、 活动介绍：</p>
           <p class="rule-desc-content">
@@ -419,8 +419,8 @@
       top: 0;
       left: 0;
       z-index: 1000;
-      width: 750px;
-      height: 1334px;
+      width: 100%;
+      height: 100%;
       background: rgba(0, 0, 0, 0.6) !important;
 
       .rule-image-div {
