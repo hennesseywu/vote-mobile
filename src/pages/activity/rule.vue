@@ -4,7 +4,6 @@
       <img class="rule-icon" src="../../assets/images/rule-logo.png">
     </div>
     <div class="rule-pannel">
-      <p class="rule-title">活动详情</p>
       <div class="rule-content">
         <p class="rule-desc-title">一、 活动介绍：</p>
         <p class="rule-desc-content">
