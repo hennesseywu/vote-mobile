@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import axio from './utils/axio'
 import config from "./config"
+import Cookie from 'js-cookie'
+
 import {
   ToastPlugin,
 } from "vux";
@@ -60,12 +62,13 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   console.log("to", to)
   document.title = to.meta.title ? to.meta.title : '闪耀之星报名';
-  if (to.name === "activityEnterSuccess" && !localStorage.getItem("submitForm")) {
-    router.push({
-      name: "activity"
-    })
-  } else if (to.name === "activityEnter") {
-    if (localStorage.getItem("wechatId") && localStorage.getItem("submitForm")) {
+  // if (to.name === "activityEnterSuccess" && !Cookie.get("submitForm")) {
+  //   router.push({
+  //     name: "activity"
+  //   })
+  // } else 
+  if (to.name === "activityEnter") {
+    if (Cookie.get("wechatId") && Cookie.get("submitForm")) {
       router.push({
         name: "activityEnterSuccess"
       })
@@ -76,7 +79,7 @@ router.beforeEach((to, from, next) => {
       }
       console.log("code", to.query.code)
       if (to.query.code) {
-        if (localStorage.getItem("wechatId")) {
+        if (Cookie.get("wechatId")) {
           next();
           return;
         }
@@ -88,7 +91,9 @@ router.beforeEach((to, from, next) => {
           }
         }).then(result => {
           if (result.data && result.data.success && result.data.msg) {
-            localStorage.setItem("wechatId", result.data.msg);
+            Cookie.set("wechatId", result.data.msg, {
+              expires: 30
+            });
           } else {
             window.location.href =
               `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${encodeURIComponent(config.wxUrl)}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;

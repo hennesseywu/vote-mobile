@@ -70,13 +70,13 @@
 
 </script>
 <style lang="less">
+  .ignore-bottom-font { }
+
   .activity {
     text-align: center;
     background: url("../../assets/images/index-bg.png");
     background-size: cover;
     width: 750px;
-    height: 100%;
-
     .logo {
       background: url("../../assets/images/index-logo.png");
       background-size: cover;
@@ -111,8 +111,9 @@
     .bottom-rule {
       text-align: center;
       margin-top: 30px;
+
       .rule-button {
-        text-decoration:underline;
+        text-decoration: underline;
         color: #ffffff;
         font-size: 32px;
       }
@@ -128,7 +129,7 @@
     }
 
     .bottom-desc {
-      font-size: 8px;
+
       color: #ffffff;
       margin: 70px 0 0 34px;
     }

@@ -9,13 +9,15 @@ import '@/assets/styles/reset.less';
 import '@/assets/styles/font-awesome.min.css'
 import FastClick from 'fastclick'
 import Vconsole from 'vconsole'
+import Cookie from 'js-cookie'
+
 FastClick.attach(document.body)
 import {
   TransferDom
 } from 'vux'
 
 window.env = "prod";
-// const vConsole = new Vconsole();
+const vConsole = new Vconsole();
 
 if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "dev";
@@ -27,6 +29,8 @@ Vue.directive('transfer-dom', TransferDom) //必须有一个 div 作为占位元
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = axio
+Vue.prototype.Cookie = Cookie
+
 /* eslint-disable no-new */
 new Vue({
   store,

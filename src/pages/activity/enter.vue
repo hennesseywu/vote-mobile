@@ -188,6 +188,7 @@
         selectedVideo: false,
         sexLabel: "请选择性别",
         sexShow: false,
+        isCode: false,
         wechatId: "",
         uuid: "",
         sendCodeText: "获取验证码",
@@ -210,8 +211,8 @@
       if (config.isDebug) {
         return;
       }
-      if (localStorage.getItem("wechatId")) {
-        this.wechatId = localStorage.getItem("wechatId");
+      if (this.Cookie.get("wechatId")) {
+        this.wechatId = this.Cookie.get("wechatId");
       } else {
         window.location.href =
           `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${encodeURIComponent(config.wxUrl)}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;
@@ -225,7 +226,10 @@
         if (this.phone == "" || !this.$refs.phone.valid) {
           this.$vux.toast.text("请填写正确的手机号");
           return;
+        } else if (this.isCode) {
+          return;
         }
+        this.isCode = true;
         this.$ajax.post("/syzxEnterInfo/sendSms", {
             phone: this.phone,
             wechatId: this.wechatId
@@ -245,6 +249,7 @@
           this.sendCodeText = --this.count + "秒后重发";
           if (this.count === 0) {
             clearInterval(countInterval);
+            this.isCode = false;
             this.count = 60;
             this.sendCodeText = "重发验证码";
           }
@@ -267,17 +272,6 @@
             this.uploadFile(e, displayName, formName);
           }
         }
-      },
-      getObjectURL(file) {
-        var url = null;
-        if (window.createObjectURL != undefined) { // basic
-          url = window.createObjectURL(file);
-        } else if (window.URL != undefined) { // mozilla(firefox)
-          url = window.URL.createObjectURL(file);
-        } else if (window.webkitURL != undefined) { // webkit or chrome
-          url = window.webkitURL.createObjectURL(file);
-        }
-        return url;
       },
       uploadFile(e, displayName, formName) {
         console.log("target", e.target.files)
@@ -346,7 +340,9 @@
         }).then(result => {
           this.$vux.loading.hide();
           if (result.data && result.data.success) {
-            localStorage.setItem("submitForm", true);
+            this.Cookie.set("submitForm", true, {
+              expires: 30
+            });
             this.$router.push({
               name: "activityEnterSuccess"
             });
@@ -385,12 +381,10 @@
         } else if (!this.selectedVideo) {
           this.$vux.toast.text("请上传视频");
           return false;
-        }
-        // else if (this.remark == "") {
-        //   this.$vux.toast.text("请填写介绍信息");
-        //   return false;
-        // }
-        else if (!this.$refs.phone.valid) {
+        } else if (this.remark == "") {
+          this.$vux.toast.text("请填写介绍信息");
+          return false;
+        } else if (!this.$refs.phone.valid) {
           this.$vux.toast.text("请填写正确的手机号");
           return false;
         } else if (!this.$refs.smsCode.valid) {
