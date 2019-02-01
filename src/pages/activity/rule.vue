@@ -12,11 +12,10 @@
           我们期待带着梦想的你们来到我们的舞台崭露头角！
         </p>
         <p class="rule-desc-title">二、 参与方法：</p>
-        <p class="rule-desc-content">1． 进入耀强音传媒官方微信公众平台；</p>
-        <p class="rule-desc-content">2． 点击立即报名；</p>
+        <p class="rule-desc-content">1．进入耀强音传媒官方微信公众平台；</p>
+        <p class="rule-desc-content">2. 点击立即报名；</p>
         <p class="rule-desc-content">
-          3．
-          填写基本资料，如姓名、年龄，身份证号，联系手机等，并上传一段选手一分钟的才艺视频和三至五张选手照片。个人资料请一定保证真实，主办方有权取消个人信息不真实的报名选手资格；未满十八周岁参与必须在个人简介中填写其监护人真实联系方式和身份证号码。
+          3．填写基本资料，如姓名、年龄，身份证号，联系手机等，并上传一段选手一分钟的才艺视频和三至五张选手照片。个人资料请一定保证真实，主办方有权取消个人信息不真实的报名选手资格；未满十八周岁参与必须在个人简介中填写其监护人真实联系方式和身份证号码。
         </p>
         <p class="rule-desc-title">三、注意事项 ：</p>
         <p class="rule-desc-content">1．参与用户必须在线签订电子协议，凭借身份证及参赛券参加现场活动。</p>
@@ -76,7 +75,7 @@
 
       .rule-desc-title {
         color: #404040;
-        font-size: 34px;
+        font-size: 30px;
         font-weight: bold;
       }
 
