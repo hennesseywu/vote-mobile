@@ -25,6 +25,14 @@ if (window.location.href.indexOf("dev-voteproject.zhph.lan/vote-mobile") > -1) {
   window.env = "prod";
 }
 
+function a (){
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+      resolve(true)
+    },1000)
+  })
+}
+
 Vue.directive('transfer-dom', TransferDom) //必须有一个 div 作为占位元素否则会出错
 
 Vue.config.productionTip = false

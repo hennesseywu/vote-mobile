@@ -72,7 +72,6 @@
       <div class="rule-image-div">
         <img class="rule-image" src="../../assets/images/rule-logo.png">
       </div>
-
       <div class="rule-pannel">
         <div class="rule-title"></div>
         <div class="rule-content">
@@ -419,7 +418,6 @@
       .rule-image-div {
         width: 710px;
         height: 530px;
-
         .rule-image {
           width: 100%;
           height: 100%;
@@ -489,7 +487,7 @@
 
       .file {
         opacity: 0;
-        position: fixed;
+        position: absolute;
         z-index: 100;
         width: 130px;
         height: 130px;
