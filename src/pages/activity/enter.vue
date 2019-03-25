@@ -7,10 +7,8 @@
         <x-input title="年龄" :max="2" required name="age" ref="age" placeholder="请输入参赛者年龄" v-model="age"></x-input>
         <cell title="性别" is-link v-model="sexLabel" @click.native="showRadio"></cell>
         <input type="hidden" name="sex" v-model="sex">
-        <x-input title="身份证号" :max="18" required name="idCard" ref="idCard" v-model="idCard" placeholder="请输入参赛者身份证号"
-          keyboard="number"></x-input>
-        <x-input title="手机号码" :max="11" required name="phone" ref="phone" v-model="phone" placeholder="请输入手机号码"
-          keyboard="number" is-type="china-mobile"></x-input>
+        <x-input title="身份证号" :max="18" required name="idCard" ref="idCard" v-model="idCard" placeholder="请输入参赛者身份证号" keyboard="number"></x-input>
+        <x-input title="手机号码" :max="11" required name="phone" ref="phone" v-model="phone" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile"></x-input>
         <x-input title="验证码" placeholder="请输入验证码" v-model="smsCode" name="smsCode" ref="smsCode" required class="weui-vcode">
           <x-button :gradients="['#d157fa', '#b60ef0']" slot="right" @click.native="sendCode" action-type="button" mini>{{sendCodeText}}</x-button>
         </x-input>
@@ -61,17 +59,12 @@
           </div>
           <label class="photo-desc">注:上传一段您家孩子的才艺展示视频,时长不超过1分钟,大小不超过10M</label>
         </cell>
-        <x-textarea required v-model="remark" name="remark" inline-desc="简介" ref="remark" class="remark" :max="200"
-          :height="100" :rows="6" :autosize="true" :show-counter="true" placeholder="请对您家宝贝做个简单的介绍(如：姓名、年龄就读几年级、才艺特长、爱好、性格特点等方面)"></x-textarea>
-        <div class="bottom">
+        <x-textarea required v-model="remark" name="remark" inline-desc="简介" ref="remark" class="remark" :max="200" :height="100" :rows="6" :autosize="true" :show-counter="true" placeholder="请对您家宝贝做个简单的介绍(如：姓名、年龄就读几年级、才艺特长、爱好、性格特点等方面)"></x-textarea>
           <img src="../../assets/images/add-btn.png" @click="submitForm" class="add-button">
-        </div>
       </group>
     </form>
     <div v-show="ruleShow" class="rule">
-      <div class="rule-image-div">
-        <img class="rule-image" src="../../assets/images/rule-logo.png">
-      </div>
+      <img class="rule-image" src="../../assets/images/rule-logo.png">
       <div class="rule-pannel">
         <div class="rule-title"></div>
         <div class="rule-content">
@@ -144,423 +137,418 @@
   </div>
 </template>
 <script>
-  import Vue from "vue";
-  import config from "../../config"
+import Vue from "vue";
+import config from "../../config";
 
-  import {
+import {
+  XInput,
+  Group,
+  XButton,
+  Radio,
+  XTextarea,
+  PopupPicker,
+  ToastPlugin,
+  LoadingPlugin,
+  Cell,
+  Popup
+} from "vux";
+
+Vue.use(ToastPlugin);
+Vue.use(LoadingPlugin);
+
+export default {
+  components: {
+    Cell,
     XInput,
     Group,
     XButton,
     Radio,
     XTextarea,
     PopupPicker,
-    ToastPlugin,
-    LoadingPlugin,
-    Cell,
     Popup
-  } from "vux";
+  },
+  data() {
+    return {
+      name: "",
+      age: "",
+      sex: "",
+      idCard: "",
+      phone: "",
+      verifyCode: "",
+      video: "video",
+      videoFileName: "video",
+      remark: "",
+      ruleShow: true,
+      selectedImageCount: 0,
+      selectedVideo: false,
+      sexLabel: "请选择性别",
+      sexShow: false,
+      isCode: false,
+      wechatId: "",
+      uuid: "",
+      sendCodeText: "获取验证码",
+      smsCode: "",
+      count: 60,
+      videoUrl: "",
+      radioOption: [
+        {
+          key: "1",
+          value: "男"
+        },
+        {
+          key: "2",
+          value: "女"
+        }
+      ]
+    };
+  },
 
-  Vue.use(ToastPlugin);
-  Vue.use(LoadingPlugin);
-
-  export default {
-    components: {
-      Cell,
-      XInput,
-      Group,
-      XButton,
-      Radio,
-      XTextarea,
-      PopupPicker,
-      Popup
+  created() {
+    if (config.isDebug) {
+      return;
+    }
+    if (this.Cookie.get("wechatId")) {
+      this.wechatId = this.Cookie.get("wechatId");
+    } else {
+      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${
+        config.appid
+      }&redirect_uri=${encodeURIComponent(
+        config.wxUrl
+      )}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;
+    }
+  },
+  methods: {
+    closeRule() {
+      this.ruleShow = false;
     },
-    data() {
-      return {
-        name: "",
-        age: "",
-        sex: "",
-        idCard: "",
-        phone: "",
-        verifyCode: "",
-        video: "video",
-        videoFileName: "video",
-        remark: "",
-        ruleShow: true,
-        selectedImageCount: 0,
-        selectedVideo: false,
-        sexLabel: "请选择性别",
-        sexShow: false,
-        isCode: false,
-        wechatId: "",
-        uuid: "",
-        sendCodeText: "获取验证码",
-        smsCode: "",
-        count: 60,
-        videoUrl: "",
-        radioOption: [{
-            key: "1",
-            value: "男"
-          },
-          {
-            key: "2",
-            value: "女"
-          }
-        ]
-      };
-    },
-
-    created() {
-      if (config.isDebug) {
+    sendCode() {
+      if (this.phone == "" || !this.$refs.phone.valid) {
+        this.$vux.toast.text("请填写正确的手机号");
+        return;
+      } else if (this.isCode) {
         return;
       }
-      if (this.Cookie.get("wechatId")) {
-        this.wechatId = this.Cookie.get("wechatId");
-      } else {
-        window.location.href =
-          `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.appid}&redirect_uri=${encodeURIComponent(config.wxUrl)}/vote-mobile/enter&response_type=code&scope=snsapi_base#wechat_redirect`;
+      this.isCode = true;
+      this.$ajax
+        .post("/syzxEnterInfo/sendSms", {
+          phone: this.phone,
+          wechatId: this.wechatId
+        })
+        .then(result => {
+          if (result.data && result.data.success) {
+            this.$vux.toast.text("验证码发送成功");
+          }
+          this.countDown();
+        });
+      //发送验证码
+    },
+    countDown() {
+      //倒计时
+      this.sendCodeText = this.count + "秒后重发";
+      let countInterval = setInterval(() => {
+        this.sendCodeText = --this.count + "秒后重发";
+        if (this.count === 0) {
+          clearInterval(countInterval);
+          this.isCode = false;
+          this.count = 60;
+          this.sendCodeText = "重发验证码";
+        }
+      }, 1000);
+    },
+    showRadio() {
+      this.sexShow = true;
+    },
+    radioChange(value, label) {
+      this.sexLabel = label;
+      this.sex = value;
+      this.sexShow = false;
+    },
+    onFile(e, displayName, formName) {
+      let checkResult = this.checkFileSize(e.target.files, displayName); //表单验证统一处理
+      if (checkResult) {
+        if (displayName == "video") {
+          this.uploadFile(e, displayName, formName);
+        } else {
+          this.uploadFile(e, displayName, formName);
+        }
       }
     },
-    methods: {
-      closeRule() {
-        this.ruleShow = false;
-      },
-      sendCode() {
-        if (this.phone == "" || !this.$refs.phone.valid) {
-          this.$vux.toast.text("请填写正确的手机号");
-          return;
-        } else if (this.isCode) {
-          return;
+    uploadFile(e, displayName, formName) {
+      console.log("target", e.target.files);
+      //文件上传统一处理
+      let form = new FormData(this.$refs[formName]);
+      form.append("wechatId", this.wechatId);
+      this.$vux.loading.show({
+        text: "上传中"
+      });
+      this.$ajax({
+        method: "post",
+        url: "/syzxEnterInfo/upload",
+        data: form,
+        headers: {
+          "Content-Type": "multipart/form-data"
         }
-        this.isCode = true;
-        this.$ajax.post("/syzxEnterInfo/sendSms", {
-            phone: this.phone,
-            wechatId: this.wechatId
-          })
-          .then(result => {
-            if (result.data && result.data.success) {
-              this.$vux.toast.text("验证码发送成功");
-            }
-            this.countDown();
-          })
-        //发送验证码
-      },
-      countDown() {
-        //倒计时
-        this.sendCodeText = this.count + "秒后重发";
-        let countInterval = setInterval(() => {
-          this.sendCodeText = --this.count + "秒后重发";
-          if (this.count === 0) {
-            clearInterval(countInterval);
-            this.isCode = false;
-            this.count = 60;
-            this.sendCodeText = "重发验证码";
-          }
-        }, 1000);
-      },
-      showRadio() {
-        this.sexShow = true;
-      },
-      radioChange(value, label) {
-        this.sexLabel = label;
-        this.sex = value;
-        this.sexShow = false;
-      },
-      onFile(e, displayName, formName) {
-        let checkResult = this.checkFileSize(e.target.files, displayName); //表单验证统一处理
-        if (checkResult) {
-          if (displayName == "video") {
-            this.uploadFile(e, displayName, formName);
-          } else {
-            this.uploadFile(e, displayName, formName);
-          }
-        }
-      },
-      uploadFile(e, displayName, formName) {
-        console.log("target", e.target.files)
-        //文件上传统一处理
-        let form = new FormData(this.$refs[formName]);
-        form.append("wechatId", this.wechatId);
-        this.$vux.loading.show({
-          text: "上传中"
-        });
-        this.$ajax({
-            method: "post",
-            url: "/syzxEnterInfo/upload",
-            data: form,
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          })
-          .then(result => {
-            this.$vux.loading.hide();
-            if (result.data && result.data.success && result.data.msg) {
-              if (displayName == "video") {
-                this.selectedVideo = true;
-                this.$refs.realVideo.src = result.data.msg; //file格式转url
-                this.$vux.toast.text("视频上传成功");
-              } else {
-                this.$vux.toast.text("照片上传成功");
-                this.selectedImageCount++;
-                this.$refs[displayName].src = result.data.msg;
-              }
-            } else if (result.data && !result.data.success && result.data.msg) {
-              this.$vux.toast.text(result.data.msg);
-            } else {
-              this.$vux.toast.text("网络开小差啦，请稍后重试");
-            }
-          })
-          .catch(e => {
-            this.$vux.loading.hide();
-            this.$vux.toast.text("网络开小差啦，请稍后重试");
-            console.error("upload file", e);
-          });
-      },
-      checkFileSize(files, type) {
-        if (type == "video" && files && files[0].size > 1024 * 1024 * 10) {
-          this.$vux.toast.text("视频大小不能超过10M");
-          return false;
-        } else {
-          if (type.indexOf("photo") > -1 && files && files[0].size > 1024 * 1024 * 2) {
-            this.$vux.toast.text("照片大小不能超过2M");
-            return false;
-          }
-        }
-        return true;
-      },
-      submitForm() {
-        if (!this.checkForm()) return;
-        var form = new FormData(this.$refs.form);
-        form.append("wechatId", this.wechatId);
-        this.$vux.loading.show({
-          text: "提交中"
-        });
-        this.$ajax({
-          method: "post",
-          url: "/syzxEnterInfo/add",
-          data: form,
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }).then(result => {
+      })
+        .then(result => {
           this.$vux.loading.hide();
-          if (result.data && result.data.success) {
-            this.Cookie.set("submitForm", true, {
-              expires: 30
-            });
-            this.$router.push({
-              name: "activityEnterSuccess"
-            });
+          if (result.data && result.data.success && result.data.msg) {
+            if (displayName == "video") {
+              this.selectedVideo = true;
+              this.$refs.realVideo.src = result.data.msg; //file格式转url
+              this.$vux.toast.text("视频上传成功");
+            } else {
+              this.$vux.toast.text("照片上传成功");
+              this.selectedImageCount++;
+              this.$refs[displayName].src = result.data.msg;
+            }
           } else if (result.data && !result.data.success && result.data.msg) {
             this.$vux.toast.text(result.data.msg);
           } else {
             this.$vux.toast.text("网络开小差啦，请稍后重试");
           }
+        })
+        .catch(e => {
+          this.$vux.loading.hide();
+          this.$vux.toast.text("网络开小差啦，请稍后重试");
+          console.error("upload file", e);
         });
-        return;
-      },
-      checkForm() {
-        let namePattern = /^[\u4E00-\u9FA5]{1,5}$/; //中文
-        let agePattern = /^\d{1,2}$/; //数字
-        let idPattern = /^\d{15}|\d{}18$ /; //身份证
-        let phonePattern = /^1\d{10}$/; //手机号
-        if (!this.$refs.name.valid) {
-          this.$vux.toast.text("请正确的输入参赛者姓名");
-          return false;
-        } else if (
-          !this.$refs.age.valid ||
-          this.age === 0 ||
-          !agePattern.test(this.age)
+    },
+    checkFileSize(files, type) {
+      if (type == "video" && files && files[0].size > 1024 * 1024 * 10) {
+        this.$vux.toast.text("视频大小不能超过10M");
+        return false;
+      } else {
+        if (
+          type.indexOf("photo") > -1 &&
+          files &&
+          files[0].size > 1024 * 1024 * 2
         ) {
-          this.$vux.toast.text("请填写正确的年龄");
+          this.$vux.toast.text("照片大小不能超过2M");
           return false;
-        } else if (this.sex == "") {
-          this.$vux.toast.text("请选择性别");
-          return false;
-        } else if (!idPattern.test(this.idCard)) {
-          this.$vux.toast.text("请填写正确的身份证号");
-          return false;
-        } else if (this.selectedImageCount < 3) {
-          this.$vux.toast.text("请上传3-5张图片");
-          return false;
-        } else if (!this.selectedVideo) {
-          this.$vux.toast.text("请上传视频");
-          return false;
-        } else if (this.remark == "") {
-          this.$vux.toast.text("请填写介绍信息");
-          return false;
-        } else if (!this.$refs.phone.valid) {
-          this.$vux.toast.text("请填写正确的手机号");
-          return false;
-        } else if (!this.$refs.smsCode.valid) {
-          this.$vux.toast.text("请填写验证码");
-          return false;
-        } else {
-          return true;
         }
       }
+      return true;
+    },
+    submitForm() {
+      if (!this.checkForm()) return;
+      var form = new FormData(this.$refs.form);
+      form.append("wechatId", this.wechatId);
+      this.$vux.loading.show({
+        text: "提交中"
+      });
+      this.$ajax({
+        method: "post",
+        url: "/syzxEnterInfo/add",
+        data: form,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(result => {
+        this.$vux.loading.hide();
+        if (result.data && result.data.success) {
+          this.Cookie.set("submitForm", true, {
+            expires: 30
+          });
+          this.$router.push({
+            name: "activityEnterSuccess"
+          });
+        } else if (result.data && !result.data.success && result.data.msg) {
+          this.$vux.toast.text(result.data.msg);
+        } else {
+          this.$vux.toast.text("网络开小差啦，请稍后重试");
+        }
+      });
+      return;
+    },
+    checkForm() {
+      let namePattern = /^[\u4E00-\u9FA5]{1,5}$/; //中文
+      let agePattern = /^\d{1,2}$/; //数字
+      let idPattern = /^\d{15}|\d{}18$ /; //身份证
+      let phonePattern = /^1\d{10}$/; //手机号
+      if (!this.$refs.name.valid) {
+        this.$vux.toast.text("请正确的输入参赛者姓名");
+        return false;
+      } else if (
+        !this.$refs.age.valid ||
+        this.age === 0 ||
+        !agePattern.test(this.age)
+      ) {
+        this.$vux.toast.text("请填写正确的年龄");
+        return false;
+      } else if (this.sex == "") {
+        this.$vux.toast.text("请选择性别");
+        return false;
+      } else if (!idPattern.test(this.idCard)) {
+        this.$vux.toast.text("请填写正确的身份证号");
+        return false;
+      } else if (this.selectedImageCount < 3) {
+        this.$vux.toast.text("请上传3-5张图片");
+        return false;
+      } else if (!this.selectedVideo) {
+        this.$vux.toast.text("请上传视频");
+        return false;
+      } else if (this.remark == "") {
+        this.$vux.toast.text("请填写介绍信息");
+        return false;
+      } else if (!this.$refs.phone.valid) {
+        this.$vux.toast.text("请填写正确的手机号");
+        return false;
+      } else if (!this.$refs.smsCode.valid) {
+        this.$vux.toast.text("请填写验证码");
+        return false;
+      } else {
+        return true;
+      }
     }
-  };
-
+  }
+};
 </script>
 <style lang="less">
-  .enter {
-    position: relative;
+.enter {
+  position: relative;
 
-    .rule {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6) !important;
+  .rule {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6) !important;
 
-      .rule-image-div {
-        width: 710px;
-        height: 530px;
-        .rule-image {
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      .rule-pannel {
-        padding-top: 180px;
-        width: 659px;
-        height: 860px;
-        background: #ffde9e;
-        border-radius: 10px;
-        margin: -250px 46px 0 45px;
-
-        .rule-title {
-          background: url("../../assets/images/add-rule-title.png");
-          background-size: cover;
-          width: 170px;
-          height: 42px;
-          margin: 10px 240px;
-        }
-
-        .rule-content {
-          margin: 0 30px 0 30px;
-          width: 599px;
-          height: 500px;
-          overflow-x: hidden;
-          overflow-y: auto;
-        }
-
-        .rule-desc-title {
-          color: #404040;
-          font-size: 24px;
-          font-weight: bold;
-        }
-
-        .rule-desc-content {
-          color: #404040;
-          font-size: 20px;
-          line-height: 32px;
-        }
-
-        .rule-button {
-          width: 412px;
-          height: 69px;
-          background: url("../../assets/images/rule-btn.png");
-          background-size: cover;
-          margin: 10px 123px 49px 123px;
-        }
-
-      }
-
+    .rule-image {
+      width: 710px;
+      height: 530px;
     }
 
+    .rule-pannel {
+      padding-top: 180px;
+      width: 659px;
+      height: 860px;
+      background: #ffde9e;
+      border-radius: 10px;
+      margin: -250px 46px 0 45px;
 
-    .form {
-      .logo {
-        background: url("../../assets/images/add-title.png");
+      .rule-title {
+        background: url("../../assets/images/add-rule-title.png");
         background-size: cover;
-        width: 750px;
-        height: 228px;
+        width: 170px;
+        height: 42px;
+        margin: 10px 240px;
       }
 
-      .vux-no-group-title {
-        margin-top: 0 !important;
+      .rule-content {
+        margin: 0 30px 0 30px;
+        width: 599px;
+        height: 500px;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
 
-      .file {
-        opacity: 0;
-        position: absolute;
-        z-index: 100;
-        width: 130px;
-        height: 130px;
+      .rule-desc-title {
+        color: #404040;
+        font-size: 24px;
+        font-weight: bold;
       }
 
-      .file-label {
-        color: #999;
-        font-size: 14px;
-        max-width: 300px;
-      }
-
-      .file-group {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .photo-group {
-        display: flex;
-
-        .photo {
-          position: relative;
-          width: 130px;
-          height: 130px;
-          margin: 5px;
-        }
-
-        .photo-image {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-        }
-      }
-
-
-      .photo-desc {
+      .rule-desc-content {
+        color: #404040;
         font-size: 20px;
-        color: #999999;
+        line-height: 32px;
       }
 
-      .video {
-        margin-bottom: 10px;
-        width: 130px;
-        height: 130px;
-        position: relative;
-
-        .video-image {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-        }
-      }
-    }
-
-    .weui-textarea {
-      font-size: 14px !important;
-      padding: 5px !important;
-    }
-
-    // }
-    .bottom {
-      text-align: center;
-      margin: 20px 149px;
-      width: 412px;
-      height: 69px;
-
-      .add-button {
-        // background: url("../../assets/images/add-btn.png");
-        // background-size: cover;
-        width: 100%;
-        height: 100%;
+      .rule-button {
+        width: 412px;
+        height: 69px;
+        background: url("../../assets/images/rule-btn.png");
+        background-size: cover;
+        margin: 10px 123px 49px 123px;
       }
     }
   }
 
+  .form {
+    .logo {
+      background: url("../../assets/images/add-title.png");
+      background-size: cover;
+      width: 750px;
+      height: 228px;
+    }
+
+    .vux-no-group-title {
+      margin-top: 0 !important;
+    }
+
+    .file {
+      opacity: 0;
+      position: absolute;
+      z-index: 100;
+      width: 130px;
+      height: 130px;
+    }
+
+    .file-label {
+      color: #999;
+      font-size: 14px;
+      max-width: 300px;
+    }
+
+    .file-group {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .photo-group {
+      display: flex;
+
+      .photo {
+        position: relative;
+        width: 130px;
+        height: 130px;
+        margin: 5px;
+      }
+
+      .photo-image {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      }
+    }
+
+    .photo-desc {
+      font-size: 20px;
+      color: #999999;
+    }
+
+    .video {
+      margin-bottom: 10px;
+      width: 130px;
+      height: 130px;
+      position: relative;
+
+      .video-image {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      }
+    }
+  }
+
+  .weui-textarea {
+    font-size: 14px !important;
+    padding: 5px !important;
+  }
+
+  // }
+
+  .add-button {
+    text-align: center;
+    margin: 20px 149px;
+    width: 412px;
+    height: 69px;
+    background: url("../../assets/images/add-btn.png");
+    background-size: cover;
+  }
+}
 </style>
